@@ -34,6 +34,17 @@ Optional:
   --resume                                                      Resume the pipeline from the earliest failed steps
   -h|--help                                                     Display this help message
 ```
+**Purposes**
+
+The initial steps of the noHic pipeline involve removal of contigs originating from non-target species (contaminant contigs) and organelles, thereby making sure that these contigs will not intefere with the downstream scaffolding. The nohic-clean first checks for the presence of adapters in the input contigs. If there are adapters, the script will stop with an error message. It is highly recommended that users should trim their reads with some effective programs like [TGSFilter](https://github.com/HuiyangYu/TGSFilter) and re-assemble their contigs before executing nohic-clean again with the `--resume` flag. Once identifying that the contigs are adapter-free, nohic-clean calls Kraken2 and TaxonKit to determine contaminant contigs in the input. If required by users, nohic-clean will also identify contigs from organelles based on BLASTn and a FASTA file containing reference mtDNA and cpDNA sequences. The contigs marked as contaminants will finally be removed.       
+
+**Adapter detection**
+
+
+
+**Contig taxonomic classification options**
+**Organellar DNA removal options**
+**Outputs** 
 
 ### 3.2. nohic-refpick.sh: Creating Personalized Reference for the Cleaned Contigs
 
