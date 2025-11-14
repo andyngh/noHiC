@@ -17,7 +17,8 @@ Pangenome-based contig scaffolding pipeline with no HiC data
 
 General usage:
 
-`nohic-clean.sh -i <contig.fa> -a <adapter.txt> -o <common_out> -t <threads> -kp <kp_prefix> -tg <taxonomic_group> [-ros <mt.cl.fasta>] [-ioc yes|no] [-m yes|no] [-kdb <kraken2_db_dir>] [--resume]
+```
+nohic-clean.sh -i <contig.fa> -a <adapter.txt> -o <common_out> -t <threads> -kp <kp_prefix> -tg <taxonomic_group> [-ros <mt.cl.fasta>] [-ioc yes|no] [-m yes|no] [-kdb <kraken2_db_dir>] [--resume]
 Required:
   -i, --input-fasta <.fa|.fasta>                                FASTA file with raw input contigs
   -a, --adapter-sequence <.txt>                                 A text file containing adapter sequences (one adapter per line)
@@ -31,7 +32,8 @@ Optional:
   -m,  --memory-mapping <yes|no>                                Use --memory-mapping option of kraken2 (Default: yes)
   -kdb, --kraken2-database <dir>                                Path to the directory containing a kraken2 database (*.k2d files) (required if -m no)
   --resume                                                      Resume the pipeline from the earliest failed steps
-  -h|--help                                                     Display this help message`
+  -h|--help                                                     Display this help message
+```
 
 ### 3.2. nohic-refpick.sh: Creating Personalized Reference for the Cleaned Contigs
 
