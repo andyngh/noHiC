@@ -43,8 +43,16 @@ The initial steps of the noHic pipeline involve removal of contigs originating f
 
 
 **Contig taxonomic classification options**
+
+
+
 **Organellar DNA removal options**
+
+
+
 **Outputs** 
+
+
 
 ### 3.2. nohic-refpick.sh: Creating Personalized Reference for the Cleaned Contigs
 
