@@ -59,3 +59,5 @@ The initial steps of the noHic pipeline involve removal of contigs originating f
 ### 3.3. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome
 
 ### 3.4. nohic-eval.sh: Assembly Evaluation and Visualization
+
+### 3.5. Example - Scaffolding the *A. thaliana* CAMA-C-2 Genome
