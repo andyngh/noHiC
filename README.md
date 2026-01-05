@@ -17,7 +17,7 @@ noHiC is a reference-guided genome assembly pipeline covering essential steps in
 
 ## 3. Tutorial
 
-To guide users through the sub-scripts of noHiC, we have provided a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with the essential files in https://github.com/andyngh/noHiC/blob/main/example.
+To guide users through the sub-scripts of noHiC, we have provided a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with the essential files in https://github.com/andyngh/noHiC/blob/main/example. In this example, we will try to replicate the manually curated CAMA-C-2 assembly from [this paper](https://doi.org/10.1038/s41586-023-06062-z) using noHiC.
 
 ### 3.1. Preparations of HiFi Reads
 
@@ -29,6 +29,17 @@ prefetch --max-size 200G ERR10084604
 fastq-dump --origfmt ./ERR10084604
 
 tgsfilter -i ERR10084604.fastq -o CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -x hifi -t 24
+```
+
+In the benchmarks of **our paper**, 90% of the CAMA-C-2 reads will be used for assembly and 10% will be used **only** for assembly evaluation. Though **you do not need to do this step in your own assembly project**, we will conduct the read subsampling here so that the tutorial's results will be the same as in our paper.   
+
+```
+# 10% for evaluation
+$nohic/seqkit sample -p 0.10 -j 100 -s 3108 CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -o CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz
+
+# 90% for assembly
+$nohic/seqkit grep -v -f <(zcat CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz | sed -n '1~4s/^@//p') \
+  CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -o CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz
 ```
 
 ### 3.2. Contaminant Contig Removal
@@ -94,7 +105,7 @@ In the case where there is no adapter in the contigs:
 
 `adapter_check.log`: the log file of the adapter detection step.
 
-`adapter_content.txt`: this file shows adapter detection result. It will say "None" is there is no adapter.
+`adapter_content.txt`: this file shows adapter detection result. It will say "None" if there is no adapter.
 
 `fgrep_matches.txt`: this file is empty in this case.
 
@@ -152,10 +163,98 @@ The sub-script will stop if it detects adapters.
 
 **Note:** If any of the step of `nohic-clean` failed, you can resume the sub-script with the same command plus the `--resume` flag after fixing the errors and deleting every file in the sub-directory of the previous failed step. 
 
-### 3.2. nohic-refpick.sh: Creating Personalized Reference for the Cleaned Contigs
+To prepare the clean contigs for scaffolding, we will exclude contigs shorter than 100 kb (as mentioned in [this paper](https://doi.org/10.1038/s41586-023-06062-z)).
+
+```
+seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa
+```
+
+### 3.2. Creating Personalized Reference for the Target Genome
+
+In parallel with contig decontamination, we will create a personalized reference (synref) for *A. thaliana* CAMA-C-2 here using `nohic-refpick.sh`. The general usage of the subscript is as following.
+
+```
+nohic-refpick.sh -s <hifi_reads.fastq.gz|target_contigs.fa> -g <pangenome_graph.gbz> -i <pangenome_graph.hapl> -o <outprefix> [-t <threads>] [-m <memory>] [-v <0|1|2|3>] [-p <yes|no>] [-r <reference.fa>]
+Required:
+  -s, --input-sequence <.fastq/.fasta>  Input contig assembly or fastq file with long reads (fastq recommended)
+  -g, --gbz     <.gbz>                  Input pangenome graph in GBZ format
+  -i, --hapidx  <.hapl>                 Haplotype information from the pangenome graph
+  -o, --outprefix <str>                 Prefix for outputs
+
+Optional:
+  -t, --threads <int>                   Thread number (default: 1)
+  -m, --ram-gb  <int>                   Maximum memory for KMC in GB (default: 32)
+  -k, --kmer    <int>                   k-mer size for KMC (default: 29)
+  -v, --verbosity <int>                 vg verbosity level (0 = silent, 1 = basic, 2 = detailed, 3 = debug; default: 2)
+  -p, --patch <yes|no>                  Run personalized reference patching step (default: yes)
+  -r, --reference <.fasta>              Reference fasta for patching (required if --patch yes)
+  -h, --help                            Display this help message
+      --version                         Display version number
+```
+
+The following command will be run to create a synref for CAMA-C-2
+
+```
+nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz -g arabidopsis_pgMC.full.gbz \
+                 -i arabidopsis_pgMC.full.hapl -o CAMA-C-2 -t 100 -m 182
+```
+
+The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were created using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph contains TAIR10.1 as the reference genome and 47 other assemblies (not including CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
+
+**Outputs**
+
+`CAMA-C-2.synref.fasta`: this is the synref for CAMA-C-2 that will be output to your current working directory.
+
+nohic-refpick.sh will also create a supplemental directory called `CAMA-C-2.refpick_outdir` containing kmers from CAMA-C-2's HiFi reads in [KFF](https://github.com/Kmer-File-Format/kff-reference) format (`CAMA-C-2.kff`) and a personalized graph for CAMA-C-2 (`CAMA-C-2.gbz`).
+
+**Note 1:** If you use the `draft` and `luck` presets of `nohic-asm.sh` (in Subsection 3.3 below), patching of the synref is not necessary. However, if you want to use the other correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous reference genome.    
+
+**Note 2:** If you have large contigs that exceed the limit of the bai index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch) 
 
 ### 3.3. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome
 
-### 3.4. nohic-eval.sh: Assembly Evaluation and Visualization
+Once we have clean contigs and synref ready, we can now start with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of the subscript is as following (Please read **our paper** to understand the options for contig correction).
 
-### 3.5. Example - Scaffolding the *A. thaliana* CAMA-C-2 Genome
+```
+nohic-asm.sh -c <contigs.fa> -r <ref.fa> -o <outdir> [options]
+Required:
+  -c, --contigs <fasta>                               FASTA file containing contig assembly
+  -r, --reference <fasta[.gz]>                        FASTA file containing reference genome file
+  -o, --output <dir>                                  Common output directory
+Optional:
+  -fq, --reads <fastq[.gz]>                           FASTQ file with long reads. If not provided, steps 1–2 are auto-disabled; step 3 runs with 'raw' preset.
+  -cov, --coverage <int>                              Sequencing coverage for CRAQ (default: 10)
+  -t, --threads <int>                                 Thread number (default: 1)
+  --ignore-het <yes|no>                               Use sms_clip_coverRate of 0.55 for CRAQ to break heterozygous chimeric contigs (default: no)
+  --run-craq <yes|no>                                 Run CRAQ (default: yes)
+  --run-inspector <yes|no>                            Run Inspector (default: yes)
+  --run-ragtag-correct <yes|no>                       Run RagTag correct (default: yes)
+  --run-gap-closing <yes|no>                          Run gap closing with TGSGapCloser (default: no)
+  -p, --presets <draft|luck|standard|aggressive|raw>  RagTag correct preset to be run (default: standard)
+  --craq-params "<args>"                              User's customized parameters for CRAQ
+  --inspector-params "<args>"                         User's customized parameters for inspector.py
+  --inspector-correct-params "<args>"                 User's customized parameters for inspector-correct.py
+  --ragtag-correct-params "<args>"                    User's customized parameters for RagTag correct
+  --ragtag-scf-params "<args>"                        User's customized parameters for RagTag scaffold
+  --tgsgapcloser-params "<args>"                      User's customized parameters for TGSGapCloser
+  --resume                                            Resume the pipeline at the earliest failed step
+  -h, --help                                          Display this help message
+```
+
+We will run the following command to correct and scaffold the clean *A. thaliana* CAMA-C-2 contigs.
+
+```
+nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -o CAMA-C-2_syn_ref_luck.asm -fq CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
+             -cov 63 -t 100 --run-gap-closing yes -p luck --craq-params "-t 94 -x map-hifi"  --inspector-params "--datatype hifi" \
+             --inspector-correct-params "--datatype pacbio-hifi" --ragtag-correct-params "-T corr" --ragtag-scf-params "-C -r -g 2" --tgsgapcloser-params "--tgstype pb"
+```
+
+**Note 1:** Please use our **Inspector fork** if you have contigs that are longer than the limit of the bai index
+
+**Note 2:** We recommend users to run CRAQ with 5-6 fewer threads compared to the thread number of the whole subscript. CRAQ run samtools (requiring 5 threads) in parallel with its main command. Thus, setting CRAQ's thread number equal to `nohic-asm` (100 in this example) will crash the subscript.
+
+**Outputs**
+
+`nohic-asm` has 5 steps and the outputs of them are divided into 5 sub-directories, including `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, `5_Gap_closing`. The main outputs of each step are FASTA files in a particular state of contig correction (e.g. `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains the contigs corrected by CRAQ, Inspector, and RagTag correct). If you do not execute gap closing, you should collect the final scaffolded assembly in `4_Scaffolding`. Otherwise, the final assembly will be in `5_Gap_closing`. All other outputs of CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are combined together in a directory inside the sub-directory of each step. 
+
+### 3.4. nohic-eval.sh: Assembly Evaluation and Visualization
