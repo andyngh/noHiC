@@ -5,6 +5,8 @@ Pangenome-based contig scaffolding pipeline with no HiC data
 
 ### 1.1. noHiC workflow
 
+![noHiC workflow](https://github.com/andyngh/noHiC/blob/main/Fig1.png)
+
 ### 1.2. dependency citations
 
 ### 1.3. noHiC citation
