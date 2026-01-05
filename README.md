@@ -17,9 +17,21 @@ noHiC is a reference-guided genome assembly pipeline covering essential steps in
 
 ## 3. Tutorial
 
-To guide users through the sub-scripts of noHiC, we have provided a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with the essential files in.
+To guide users through the sub-scripts of noHiC, we have provided a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with the essential files in https://github.com/andyngh/noHiC/blob/main/example.
 
-### 3.1. nohic-clean.sh: Removing Contaminant Contigs
+### 3.1. Preparations of HiFi Reads
+
+The FASTQ file containing HiFi reads of *A. thaliana* CAMA-C-2 is downloaded from NCBI SRA using `prefetch` and `fastq-dump` from [SRA Toolkit](https://github.com/ncbi/sra-tools). We highly recommend [TGSFilter](https://github.com/HuiyangYu/TGSFilter) for trimming adapters in the reads. 
+
+```
+prefetch --max-size 200G ERR10084604
+
+fastq-dump --origfmt ./ERR10084604
+
+tgsfilter -i ERR10084604.fastq -o CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -x hifi -t 24
+```
+
+### 3.2. Contaminant Contig Removal
 
 General usage:
 
@@ -40,23 +52,6 @@ Optional:
   --resume                                                      Resume the pipeline from the earliest failed steps
   -h|--help                                                     Display this help message
 ```
-**Purposes**
-
-The initial steps of the noHic pipeline involve removal of contigs originating from non-target species (contaminant contigs) and organelles, thereby making sure that these contigs will not intefere with the downstream scaffolding. The nohic-clean first checks for the presence of adapters in the input contigs. If there are adapters, the script will stop with an error message. It is highly recommended that users should trim their reads with some effective programs like [TGSFilter](https://github.com/HuiyangYu/TGSFilter) and re-assemble their contigs before executing nohic-clean again with the `--resume` flag. Once identifying that the contigs are adapter-free, nohic-clean calls Kraken2 and TaxonKit to determine contaminant contigs in the input. If required by users, nohic-clean will also identify contigs from organelles based on BLASTn and a FASTA file containing reference mtDNA and cpDNA sequences. The contigs marked as contaminants will finally be removed.       
-
-**Adapter detection**
-
-
-
-**Contig taxonomic classification options**
-
-
-
-**Organellar DNA removal options**
-
-
-
-**Outputs** 
 
 
 
