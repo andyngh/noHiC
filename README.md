@@ -196,7 +196,7 @@ The following command will be run to create a synref for CAMA-C-2
 
 ```
 nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz -g arabidopsis_pgMC.full.gbz \
-                 -i arabidopsis_pgMC.full.hapl -o CAMA-C-2 -t 100 -m 182
+                 -i arabidopsis_pgMC.full.hapl -o CAMA-C-2 -t 100 -m 182 -p no
 ```
 
 The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were created using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph contains TAIR10.1 as the reference genome and 47 other assemblies (not including CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
