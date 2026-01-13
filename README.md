@@ -375,6 +375,132 @@ Where, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `len
 
 `step_5_done.txt`: step completion marker
 
+**Evaluation results**
+
+*Continuity metrics*
+
+The continuity metrics of the CAMA-C-2 assembly (after gap closing) are as follows.
+
+```
+# scaffolds     6
+Total scaffold length   138766131
+Average scaffold length 23127688.50
+Scaffold N50    26621518
+Scaffold auN    27076433.31
+Scaffold L50    3
+Largest scaffold        33491627
+Smallest scaffold       3638613
+# contigs       31
+Total contig length     138760864
+Average contig length   4476156.90
+Contig N50      22154653
+Contig auN      19037802.18
+Contig L50      3
+Largest contig  29953688
+Smallest contig 105818
+# gaps in scaffolds     25
+Total gap length in scaffolds   5267
+Average gap length in scaffolds 210.68
+Gap N50 in scaffolds    679
+Gap auN in scaffolds    551.59
+Gap L50 in scaffolds    3
+Largest gap in scaffolds        1035
+Smallest gap in scaffolds       100
+Base composition (A:C:G:T)      43769215:25590160:25370347:44031142
+GC content %    36.73
+# soft-masked bases     0
+# segments      31
+Total segment length    138760864
+Average segment length  4476156.90
+# gaps  25
+# paths 6
+```
+
+In **our paper**, to highlight the benefit of synref in preventing contig fragmentations (in comparison with the assembly guided by a conventional reference - TAIR10.1), we calculated the in-chromosome continuity metrics before gap closing as follows.
+
+```
+# scaffolds: 5
+Total scaffold length: 135127518
+Average scaffold length: 27025503.60
+Scaffold N50: 26621518
+Scaffold auN: 27707549.45
+Scaffold L50: 3
+Largest scaffold: 33491627
+Smallest scaffold: 21755102
+# contigs: 13
+Total contig length: 135123951
+Average contig length: 10394150.08
+Contig N50: 22154653
+Contig auN: 19544014.65
+Contig L50: 3
+Largest contig: 29953688
+Smallest contig: 338670
+# gaps in scaffolds: 8
+Total gap length in scaffolds: 3567
+Average gap length in scaffolds: 445.88
+Gap N50 in scaffolds: 1013
+Gap auN in scaffolds: 766.81
+Gap L50 in scaffolds: 2
+Largest gap in scaffolds: 1035
+Smallest gap in scaffolds: 100
+Base composition (A:C:G:T): 42887133:24642914:24453874:43140030
+GC content %: 36.33
+# soft-masked bases: 0
+# segments: 13
+Total segment length: 135123951
+Average segment length: 10394150.08
+# gaps: 8
+# paths: 5
+```
+
+*Gene space completeness*
+
+The results from BUSCO completeness evaluation of the CAMA-C-2 assembly are as follows.
+
+```
+    -------------------------------------------------------------------------------------------
+    |Results from dataset embryophyta_odb12                                                    |
+    -------------------------------------------------------------------------------------------
+    |C:99.1%[S:95.4%,D:3.8%],F:0.2%,M:0.6%,n:2026,E:9.7%                                       |
+    |2008    Complete BUSCOs (C)    (of which 195 contain internal stop codons)                |
+    |1932    Complete and single-copy BUSCOs (S)                                               |
+    |76    Complete and duplicated BUSCOs (D)                                                  |
+    |5    Fragmented BUSCOs (F)                                                                |
+    |13    Missing BUSCOs (M)                                                                  |
+    |2026    Total BUSCO groups searched                                                       |
+    -------------------------------------------------------------------------------------------
+
+```
+
+*Structural correctness*
+
+The AQIs and QV showing the strutural completeness of CAMA-C-2 are as follows.
+
+```
+# From CRAQ:
+
+Short Report:
+#Chr    Covered.Rate    Low-confident.Rate      Avg.CRH Avg.CSH Avg.CRE(R-AQI)  Avg.CSE(S-AQI)
+Genome  0.942858357850962       0.00782285262516361     0       0       0.266635654297737(97.3688768987995)     0(100)
+chr5_RagTag     0.970727179188941       0.00869195109824369     0       0       0.0687832156297752(99.3145279946857)    0(100)
+chr4_RagTag     0.942827738501308       0.0208867110989366      0       0       0.0910201686130419(99.0939281100937)    0(100)
+chr1_RagTag     0.973810440811941       0.00536644560843683     0       0       0.122644843406757(98.7810417922147)     0(100)
+chr3_RagTag     0.983733272931072       0.00203602206170129     0       0       0.152738943371082(98.4842159968631)     0(100)
+chr2_RagTag     0.964547262104562       0.00347490885241959     0       0       0.28593450975051(97.1811473172815)      0(100)
+Chr0_RagTag     2.74829845971613e-07    0.0079381874526949      0       0       19000000(0)     0(100)
+
+# From Inspector:
+
+QV      64.83304855386444
+```
+
+The following figure shows the misassemblies in CAMA-C-2. 
+
+![Arabidopsis_assembly_errors](https://github.com/andyngh/noHiC/blob/main/figures/error_synref.png)
+
+The resulting CAMA-C-2 assembly (y-axis) has strong strutural agreement to the public, manually curated assembly (x-axis)/
+
+![Arabidopsis_dot_plot](https://github.com/andyngh/noHiC/blob/main/figures/ara_synref_to_NCBI.paf.png)
 
 
 
