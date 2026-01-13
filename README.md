@@ -42,7 +42,7 @@ $nohic/seqkit grep -v -f <(zcat CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz | sed 
   CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -o CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz
 ```
 
-### 3.2. Contaminant Contig Removal
+### 3.2. nohic-clean.sh: Contaminant Contig Removal
 
 The `nohic-clean` sub-script will be used to remove contaminant contigs from an input contig-level assembly. The general usage of the script is as following:
 
@@ -169,7 +169,7 @@ To prepare the clean contigs for scaffolding, we will exclude contigs shorter th
 seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa
 ```
 
-### 3.2. Creating Personalized Reference for the Target Genome
+### 3.2. nohic-refpick.sh: Creating Personalized Reference for the Target Genome
 
 In parallel with contig decontamination, we will create a personalized reference (synref) for *A. thaliana* CAMA-C-2 here using `nohic-refpick.sh`. The general usage of the subscript is as following.
 
