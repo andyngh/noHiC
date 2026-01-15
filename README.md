@@ -11,6 +11,60 @@ noHiC is a reference-guided genome assembly pipeline covering essential steps in
 
 ### 1.2. dependency citations
 
+Please cite the following tools along with noHiC when you use the pipeline.
+
+**nohic-clean**
+
+[Kraken2](https://doi.org/10.1186/s13059-019-1891-0)
+
+[Taxonkit](https://doi.org/10.1016/j.jgg.2021.03.006)
+
+[BLAST+](https://doi.org/10.1186/1471-2105-10-421)
+
+[Biopython](https://doi.org/10.1093/bioinformatics/btp163)
+
+**nohic-refpick**
+
+[KMC 3](https://doi.org/10.1093/bioinformatics/btx304)
+
+[VG](https://doi.org/10.1038/nbt.4227)
+
+[VG haplotypes](https://doi.org/10.1038/s41592-024-02407-2)
+
+[minimap2](https://doi.org/10.1093/bioinformatics/bty191)
+
+[samtools](https://doi.org/10.1093/bioinformatics/btp352)
+
+[GPatch](https://doi.org/10.1101/2025.05.22.655567)
+
+**nohic-asm**
+
+[CRAQ](https://doi.org/10.1038/s41467-023-42336-w)
+
+[Inspector](https://doi.org/10.1186/s13059-021-02527-4)
+
+[RagTag](https://doi.org/10.1186/s13059-022-02823-7)
+
+[seqkit](https://doi.org/10.1002/imt2.191)
+
+[TGS-GapCloser](https://doi.org/10.1093/gigascience/giaa094)
+
+**nohic-eval**
+
+[gfastats](https://doi.org/10.1093/bioinformatics/btac460)
+
+[bioawk](https://github.com/lh3/bioawk)
+
+[BUSCO](https://doi.org/10.1093/nar/gkae987)
+
+[ggplot2](https://doi.org/10.1007/978-3-319-24277-4)
+
+[readr](https://readr.tidyverse.org/)
+
+[dplyr](https://dplyr.tidyverse.org/)
+
+[paf2dotplot](https://github.com/moold/paf2dotplot?tab=readme-ov-file)
+
 ### 1.3. noHiC citation
 
 ## 2. Installation
@@ -498,7 +552,7 @@ The following figure shows the misassemblies in CAMA-C-2.
 
 ![Arabidopsis_assembly_errors](https://github.com/andyngh/noHiC/blob/main/figures/error_synref.png)
 
-The resulting CAMA-C-2 assembly (y-axis) has strong strutural agreement to the public, manually curated assembly (x-axis)/
+The resulting CAMA-C-2 assembly (y-axis) has strong strutural agreement to the public, manually curated assembly (x-axis).
 
 ![Arabidopsis_dot_plot](https://github.com/andyngh/noHiC/blob/main/figures/ara_synref_to_NCBI.paf.png)
 
