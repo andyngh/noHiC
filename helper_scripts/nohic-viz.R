@@ -89,7 +89,7 @@ p <- ggplot() +
   theme(panel.background = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        #panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5),
+        panel.border     = element_rect(color = "black", fill = NA, linewidth = 0.5),
         axis.ticks.y     = element_blank())
 
 max_len <- max(chroms$length, na.rm = TRUE)
