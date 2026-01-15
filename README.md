@@ -60,7 +60,7 @@ seqkit grep -v -f <(zcat CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz | sed -n '1~4
   CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -o CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz
 ```
 
-### [3.2. nohic-clean.sh: Contaminant Contig Removal](#3.2.-nohic-clean.sh:-Contaminant-Contig-Removal)
+### [3.2. nohic-clean.sh: Contaminant Contig Removal](#32-nohic-cleansh-contaminant-contig-removal)
 
 The `nohic-clean` sub-script will be used to remove contaminant contigs from an input contig-level assembly. The general usage of the script is as following:
 
