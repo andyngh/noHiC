@@ -229,7 +229,7 @@ nohic-refpick.sh will also create a supplemental directory called `CAMA-C-2.refp
 
 **Note 2:** If you have large contigs that exceed the limit of the bai index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch) 
 
-### [3.4. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome](#3.4.-nohic-asm.sh:-Scaffolding-Cleaned-Contigs-Based-on-a-Reference-Genome)
+### [3.4. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome](#34-nohic-asmsh-scaffolding-cleaned-contigs-based-on-a-reference-genome)
 
 Once we have clean contigs and synref ready, we can now start with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of the subscript is as following (Please read **our paper** to understand the options for contig correction).
 
@@ -275,7 +275,7 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -
 
 `nohic-asm` has 5 steps and the outputs of them are divided into 5 sub-directories, including `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, `5_Gap_closing`. The main outputs of each step are FASTA files in a particular state of contig correction (e.g. `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains the contigs corrected by CRAQ, Inspector, and RagTag correct). If you do not execute gap closing, you should collect the final scaffolded assembly in `4_Scaffolding`. Otherwise, the final assembly will be in `5_Gap_closing`. All other outputs of CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are combined together in a directory inside the sub-directory of each step. 
 
-### [3.5. nohic-eval.sh: Assembly Evaluation and Visualization](#3.5.-nohic-eval.sh:-Assembly-Evaluation-and-Visualization)
+### [3.5. nohic-eval.sh: Assembly Evaluation and Visualization](#35-nohic-evalsh-assembly-evaluation-and-visualization)
 
 Quality of the final output assembly of `nohic-asm.sh` (from the `5_Gap_closing` directory) will be evaluated using `nohic-eval.sh`. The general usage of the subscript is as follows:
 
