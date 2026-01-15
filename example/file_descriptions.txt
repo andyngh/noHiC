@@ -1,6 +1,6 @@
-CAMA-C-2.asm.bp.p_ctg.fa: raw primary contigs of A. thaliana (Ath) CAMA-C-2 (input contig data of noHiC).
-GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa: Manually curated public assembly of Ath CAMA-C-2 for dot plot generation by nohic-eval.sh.
-arabidopsis_pgMC.full.gbz: Arabidopsis pangenome graph in GBZ format for generating synref by nohic-refpick.sh.
-arabidopsis_pgMC.full.hapl: Haplotype information of the pangenome graph for generating synref by nohic-refpick.sh.
-ath_chr_names.txt: chromosome names of the scaffolded CAMA-C-2 assembly (from nohic-asm.sh) for misassembly visualizations by nohic-eval.sh.
-mt.cl.fasta: reference cp- and mtDNA sequences of Arabidopsis for raw contig decontamination by nohic-clean.sh.
+-CAMA-C-2.asm.bp.p_ctg.fa: raw primary contigs of A. thaliana (Ath) CAMA-C-2 (input contig data of noHiC).
+-GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa: Manually curated public assembly of Ath CAMA-C-2 for dot plot generation by nohic-eval.sh.
+-arabidopsis_pgMC.full.gbz: Arabidopsis pangenome graph in GBZ format for generating synref by nohic-refpick.sh.
+-arabidopsis_pgMC.full.hapl: Haplotype information of the pangenome graph for generating synref by nohic-refpick.sh.
+-ath_chr_names.txt: chromosome names of the scaffolded CAMA-C-2 assembly (from nohic-asm.sh) for misassembly visualizations by nohic-eval.sh.
+-mt.cl.fasta: reference cp- and mtDNA sequences of Arabidopsis for raw contig decontamination by nohic-clean.sh.
