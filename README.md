@@ -187,7 +187,7 @@ To prepare the clean contigs for scaffolding, we will exclude contigs shorter th
 seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa
 ```
 
-### [3.3. nohic-refpick.sh: Creating Personalized Reference for the Target Genome](#3.3.-nohic-refpick.sh:-Creating-Personalized-Reference-for-the-Target-Genome)
+### [3.3. nohic-refpick.sh: Creating Personalized Reference for the Target Genome](#33-nohic-refpicksh-creating-personalized-reference-for-the-target-genome)
 
 In parallel with contig decontamination, we will create a personalized reference (synref) for *A. thaliana* CAMA-C-2 here using `nohic-refpick.sh`. The general usage of the subscript is as following.
 
