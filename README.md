@@ -3,7 +3,7 @@ Pangenome-based contig scaffolding pipeline with no HiC data
 
 ## [1. Introduction](#1.-Introduction)
 
-### [1.1. noHiC workflow](#1.1.-noHiC workflow)
+### [1.1. noHiC workflow](#1.1.-noHiC-workflow)
 
 noHiC is a reference-guided genome assembly pipeline covering essential steps in contig scaffolding with four independent sub-scripts, including contig decontamination (`nohic-clean`), misassembly correction, reference-guided contig scaffolding (`nohic-refpick` and `nohic-asm`), and assembly evaluation (`nohic-eval`). Given an input FASTA file containing contig-level assembly, the pipeline starts with removing contigs not originating from a specified taxonomic group and optionally organellar contigs. After that, misassemblies in the selected contigs will be corrected in three different approaches using **error-corrected** longs reads (each can be skipped), including clip-based chimeric contig breakings by [CRAQ](https://github.com/JiaoLaboratory/CRAQ/tree/main), small misassembly (base substitutions, expansions, collapses, and haplotype switches) corrections by [Inspector](https://github.com/Maggi-Chen/Inspector), and reference-guided misjoin breakings by [RagTag correct](https://github.com/malonge/RagTag/wiki/correct). The corrected contigs are then scaffolded based on a reference genome with [RagTag scaffold](https://github.com/malonge/RagTag/wiki/scaffold). The most important feature of noHiC is that users can utilized publicly available pangenome graphs built by tools like [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md) to synthesized a genetically closed, personalized reference genome (synref) for reference-guided contig error correction and scaffolding based on [KMC](https://github.com/refresh-bio/KMC?tab=readme-ov-file) and [vg haplotype](https://github.com/vgteam/vg/wiki/Haplotype-Sampling), minimizing the amount of false contig correction. Quality of the scaffolded assembly can be assessed based on both metrics (N50, auN, gap number, BUSCO...) and visualizations (i.e. comparing target assembly with a reference genome using a dot plot built by [paf2dotplot](https://github.com/moold/paf2dotplot) and visualizing the positions of remaining misassemblies on chromosomes by `nohic-viz.R`). Please find the detailed descriptions of noHiC in **our paper**.  
 
@@ -29,7 +29,7 @@ Please cite the following tools along with noHiC when you use the pipeline.
 
 [gfastats](https://doi.org/10.1093/bioinformatics/btac460), [bioawk](https://github.com/lh3/bioawk), [BUSCO](https://doi.org/10.1093/nar/gkae987), [ggplot2](https://doi.org/10.1007/978-3-319-24277-4), [readr](https://readr.tidyverse.org/), [dplyr](https://dplyr.tidyverse.org/), [paf2dotplot](https://github.com/moold/paf2dotplot?tab=readme-ov-file)
 
-### [1.3. noHiC citation](#1.3.-noHiC citation)
+### [1.3. noHiC citation](#1.3.-noHiC-citation)
 
 ## [2. Installation](#2.-Installation)
 
@@ -187,7 +187,7 @@ To prepare the clean contigs for scaffolding, we will exclude contigs shorter th
 seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa
 ```
 
-### [3.2. nohic-refpick.sh: Creating Personalized Reference for the Target Genome](#3.2.-nohic-refpick.sh:-Creating-Personalized-Reference-for-the-Target-Genome)
+### [3.3. nohic-refpick.sh: Creating Personalized Reference for the Target Genome](#3.3.-nohic-refpick.sh:-Creating-Personalized-Reference-for-the-Target-Genome)
 
 In parallel with contig decontamination, we will create a personalized reference (synref) for *A. thaliana* CAMA-C-2 here using `nohic-refpick.sh`. The general usage of the subscript is as following.
 
@@ -229,7 +229,7 @@ nohic-refpick.sh will also create a supplemental directory called `CAMA-C-2.refp
 
 **Note 2:** If you have large contigs that exceed the limit of the bai index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch) 
 
-### [3.3. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome](#3.3.-nohic-asm.sh:-Scaffolding-Cleaned-Contigs-Based-on-a-Reference-Genome)
+### [3.4. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome](#3.4.-nohic-asm.sh:-Scaffolding-Cleaned-Contigs-Based-on-a-Reference-Genome)
 
 Once we have clean contigs and synref ready, we can now start with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of the subscript is as following (Please read **our paper** to understand the options for contig correction).
 
@@ -275,7 +275,7 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -
 
 `nohic-asm` has 5 steps and the outputs of them are divided into 5 sub-directories, including `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, `5_Gap_closing`. The main outputs of each step are FASTA files in a particular state of contig correction (e.g. `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains the contigs corrected by CRAQ, Inspector, and RagTag correct). If you do not execute gap closing, you should collect the final scaffolded assembly in `4_Scaffolding`. Otherwise, the final assembly will be in `5_Gap_closing`. All other outputs of CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are combined together in a directory inside the sub-directory of each step. 
 
-### [3.4. nohic-eval.sh: Assembly Evaluation and Visualization](#3.4.-nohic-eval.sh:-Assembly-Evaluation-and-Visualization)
+### [3.5. nohic-eval.sh: Assembly Evaluation and Visualization](#3.5.-nohic-eval.sh:-Assembly-Evaluation-and-Visualization)
 
 Quality of the final output assembly of `nohic-asm.sh` (from the `5_Gap_closing` directory) will be evaluated using `nohic-eval.sh`. The general usage of the subscript is as follows:
 
