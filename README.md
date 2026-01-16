@@ -101,7 +101,7 @@ nohic-clean.sh -i CAMA-C-2.asm.bp.p_ctg.fa -a PacBio_adapter.txt -o CAMA-C-2.asm
 
 Here, `CAMA-C-2.asm.bp.p_ctg.fa` is the input contig file. `PacBio_adapter.txt` contains adapter sequences with no headers and one sequence per line. The reference mt- and cpDNA of *A. thaliana* are provided in `mt.cl.fasta`.
 
-**Note:** If you have root privileges on your machine and many contig-level assemblies to decontaminate, we recommend executing the following commands before running `nohic-clean` with `-m yes` and **no** `-kdb`.
+**Note:** If you have root privileges on your machine and many contig-level assemblies to decontaminate, we recommend executing the following commands before running `nohic-clean` with `-m yes` and **no** `-kdb`. You can read [this page](https://avilpage.com/2024/07/mastering-kraken2-performance-optimisation.html) for more information regarding this matter.
 
 ```
 # Resize your /dev/shm directory to fit the core_nt database
@@ -117,7 +117,7 @@ cp /path/to/your/database/directory/*.k2d /dev/shm/
 
 **Outputs**
 
-`nohic-clean.sh` will create four sub-directories inside the common output directory `CAMA-C-2.asm.bp.p_ctg.cleaning`. The output files in the subdirectories are as following.
+`nohic-clean.sh` creates four subdirectories within the common output directory `CAMA-C-2.asm.bp.p_ctg.cleaning`. The output files in these subdirectories are as follows.
 
 *1_adapter_content_check*
 
@@ -133,15 +133,15 @@ In the case where there is no adapter in the contigs:
 
 In the case where there are adapters in the contigs:
 
-The sub-script will stop if it detects adapters.
+The `nohic-clean` sub-script will stop if it detects adapters.
 
 `adapter_check.log`: the log file of the adapter detection step.
 
-`adapter_matches.fa` and `adapter_matches.txt`: a FASTA file containing the contigs with adapters and a text file with the names of adapter-containing contigs, respectively. Users can choose to remove these contigs out of the input assembly before re-running `nohic-clean` if they are small and/or there are only a few of them. If there are long and/or many adapter-containing contigs, we highly recommend you to do read adapter trimming again with a more effective tool and re-assembly the contigs before running `nohic-clean`.
+`adapter_matches.fa` and `adapter_matches.txt`: a FASTA file containing contigs with adapters and a text file listing the names of adapter-containing contigs, respectively. Users may choose to remove these contigs from the input assembly before re-running `nohic-clean` if they are small and/or few in number. If there are long and/or many adapter-containing contigs, we highly recommend performing read adapter trimming again with a more effective tool and re-assembling the contigs before running `nohic-clean`.
 
-`fgrep_matches.txt`: this file now tell you where the adapters are detected in each contig in the format: input_file_path:in-contig_line_number_of_detected_adapter:contig_sequence
+`fgrep_matches.txt`: this file now tells you where the adapters are detected in each contig in the format: input_file_path:in-contig_line_number_of_detected_adapter:contig_sequence
 
-`step_1_done.txt`: this file will say "failed" in the case of adapters found.
+`step_1_done.txt`: this file will say "failed" (to stop `nohic-clean`), if adapters are found.
 
 *2_contig_taxonomic_classification*
 
@@ -157,21 +157,21 @@ The sub-script will stop if it detects adapters.
 
 *3_organellar_contigs_identification*
 
-`blast_out.tab`: this file contains unfiltered BLAST results with contigs as queries and mt- and cpDNA sequences as subjects in [output format 6](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6).
+`blast_out.tab`: this file contains unfiltered BLASTn results with contigs as queries and mt- and cpDNA sequences as subjects in [output format 6](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6).
 
-`filter_blast_out.tab`: this file contains the filtered BLAST results with pident and qcovs of >= 90%. 
+`filter_blast_out.tab`: this file contains the filtered BLASTn results with pident and qcovs of >= 90%. 
 
-`filter_blast.py`: the helper script used to filter the BLAST results.
+`filter_blast.py`: the helper script used to filter the BLASTn results.
 
 `organellar_dna_containing_contigs.txt`: this file contains the names of organellar contigs. It will be used for decontamination later.
 
-`blast_formatdb_and_filter.log`: log file of the step
+`blast_formatdb_and_filter.log`: the log file of the step
 
 `step_3_done.txt`: step completion marker
 
 *4_contig_purification*
 
-`CAMA-C-2.asm.bp.p_ctg.pure.fa`: the FASTA files with contaminant contigs removed. This is the **main output file**.
+`CAMA-C-2.asm.bp.p_ctg.pure.fa`: the FASTA file with contaminant contigs removed. This is the **main output file**.
 
 `contigs_from_contaminant_n_organelle.txt`: A list combining `name_of_contaminant_contigs.txt` in step 2 and `organellar_dna_containing_contigs.txt` in step 3.
 
@@ -181,9 +181,11 @@ The sub-script will stop if it detects adapters.
 
 `step_4_done.txt`: step completion marker
 
-**Note:** If any of the step of `nohic-clean` failed, you can resume the sub-script with the same command plus the `--resume` flag after fixing the errors and deleting every file in the sub-directory of the previous failed step. 
+**Note 1:** If any step of `nohic-clean` fails, you can resume the sub-script using the same command with the additional `--resume` flag after fixing the errors and deleting all files in the subdirectory of the previously failed step.
 
-To prepare the clean contigs for scaffolding, we will exclude contigs shorter than 100 kb (as mentioned in [this paper](https://doi.org/10.1038/s41586-023-06062-z)).
+**Note 2:** In all noHiC sub-scripts, you can create a `step_*_done.txt` step completion marker containing the word “ok” to deliberately skip a mandatory step, though we do not guarantee that the sub-scripts are executed properly in this case.
+
+To prepare the clean contigs for scaffolding, we exclude contigs shorter than 100 kb (as described in [this paper](https://doi.org/10.1038/s41586-023-06062-z)).
 
 ```
 seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa
@@ -191,10 +193,10 @@ seqkit seq -m 100000 CAMA-C-2.asm.bp.p_ctg.pure.fa -o CAMA-C-2.asm.bp.p_ctg.pure
 
 ### 3.3. nohic-refpick.sh: Creating Personalized Reference for the Target Genome
 
-In parallel with contig decontamination, we will create a personalized reference (synref) for *A. thaliana* CAMA-C-2 here using `nohic-refpick.sh`. The general usage of the subscript is as following.
+In parallel with contig decontamination, we create a personalized reference (synref) for *A. thaliana* CAMA-C-2 using `nohic-refpick.sh`. The general usage of this sub-script is as follows.
 
 ```
-nohic-refpick.sh -s <reads.fastq.gz|target_contigs.fa> -g <pangenome_graph.gbz> -i <pangenome_graph.hapl> -o <outprefix> [-t <threads>] [-m <memory>] [-v <0|1|2|3>] [-p <yes|no>] [-r <ref.fa>]
+nohic-refpick.sh -s <reads.fastq.gz|target_contigs.fa> -g <pangenome_graph.gbz> -i <pangenome_graph.hapl> -o <outprefix> -r <donor_genome.fa> [Options]
 Required:
   -s, --input-sequence <.fastq/.fasta>  Input contig assembly or fastq file with long reads (fastq recommended)
   -g, --gbz     <.gbz>                  Input pangenome graph in GBZ format
@@ -212,28 +214,28 @@ Optional:
       --version                         Display version number
 ```
 
-The following command will be run to create a synref for CAMA-C-2
+The following command is run to create a synref for CAMA-C-2
 
 ```
 nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz -g arabidopsis_pgMC.full.gbz \
                  -i arabidopsis_pgMC.full.hapl -o CAMA-C-2 -t 100 -m 182 -p no
 ```
 
-The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were created using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph contains TAIR10.1 as the reference genome and 47 other assemblies (not including CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
+The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were generated using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph includes TAIR10.1 as the reference genome and 47 additional assemblies (excluding CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
 
 **Outputs**
 
-`CAMA-C-2.synref.fasta`: this is the synref for CAMA-C-2 that will be output to your current working directory.
+`CAMA-C-2.synref.fasta`: this is the synref for CAMA-C-2 that is written to the current working directory. We recommend removing the `#` character from the sequence headers before using the synref.
 
-nohic-refpick.sh will also create a supplemental directory called `CAMA-C-2.refpick_outdir` containing kmers from CAMA-C-2's HiFi reads in [KFF](https://github.com/Kmer-File-Format/kff-reference) format (`CAMA-C-2.kff`) and a personalized graph for CAMA-C-2 (`CAMA-C-2.gbz`).
+`nohic-refpick.sh` also creates a supplemental directory named `CAMA-C-2.refpick_outdir`, which contains k-mers from the CAMA-C-2 HiFi reads in [KFF](https://github.com/Kmer-File-Format/kff-reference) format (`CAMA-C-2.kff`) and a personalized graph for CAMA-C-2 (`CAMA-C-2.gbz`).
 
-**Note 1:** If you use the `draft` and `luck` presets of `nohic-asm.sh` (in Subsection 3.3 below), patching of the synref is not necessary. However, if you want to use the other correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous reference genome.    
+**Note 1:** If you use the `draft` and `luck` presets of `nohic-asm.sh` (see Subsection 3.4 below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
 
-**Note 2:** If you have large contigs that exceed the limit of the bai index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch) 
+**Note 2:** If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch).
 
-### 3.4. nohic-asm.sh: Scaffolding Cleaned Contigs Based on a Reference Genome
+### 3.4. nohic-asm.sh: Scaffolding Clean Contigs Based on a Reference Genome
 
-Once we have clean contigs and synref ready, we can now start with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of the subscript is as following (Please read **our paper** to understand the options for contig correction).
+Once the clean contigs and synref are ready, we can proceed with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of this sub-script is as follows (please read **our paper** to understand the options for contig correction).
 
 ```
 nohic-asm.sh -c <contigs.fa> -r <ref.fa> -o <outdir> -fq <reads.fastq.gz> -cov <sequencing_coverage> -t <threads> [Options]
@@ -261,7 +263,7 @@ Optional:
   -h, --help                                          Display this help message
 ```
 
-We will run the following command to correct and scaffold the clean *A. thaliana* CAMA-C-2 contigs.
+We run the following command to correct and scaffold the clean *A. thaliana* CAMA-C-2 contigs.
 
 ```
 nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -o CAMA-C-2_syn_ref_luck.asm -fq CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
@@ -269,17 +271,19 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -
              --inspector-correct-params "--datatype pacbio-hifi" --ragtag-correct-params "-T corr" --ragtag-scf-params "-C -r -g 2" --tgsgapcloser-params "--tgstype pb"
 ```
 
-**Note 1:** Please use our **Inspector fork** if you have contigs that are longer than the limit of the bai index
+The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGapcloser (via the `--*-params` arguments) are mainly used to specify the sequencing platform. You should consult the original manuals of these dependencies to determine the appropriate optional parameters to use in your own assembly project.
 
-**Note 2:** We recommend users to run CRAQ with 5-6 fewer threads compared to the thread number of the whole subscript. CRAQ run samtools (requiring 5 threads) in parallel with its main command. Thus, setting CRAQ's thread number equal to `nohic-asm` (100 in this example) will crash the subscript.
+**Note 1:** Please use our **Inspector fork** if you have contigs that are longer than the stated limit of the BAI index.
+
+**Note 2:** We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
 
 **Outputs**
 
-`nohic-asm` has 5 steps and the outputs of them are divided into 5 sub-directories, including `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, `5_Gap_closing`. The main outputs of each step are FASTA files in a particular state of contig correction (e.g. `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains the contigs corrected by CRAQ, Inspector, and RagTag correct). If you do not execute gap closing, you should collect the final scaffolded assembly in `4_Scaffolding`. Otherwise, the final assembly will be in `5_Gap_closing`. All other outputs of CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are combined together in a directory inside the sub-directory of each step. 
+`nohic-asm` consists of five steps, and the outputs are organized into five corresponding subdirectories: `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, and `5_Gap_closing`. The main outputs of each step are FASTA files representing contigs at specific stages of correction (for example, `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains contigs corrected by CRAQ, Inspector, and RagTag correct). If gap closing is not performed, the final scaffolded assembly should be obtained from `4_Scaffolding`; otherwise, the final assembly will be located in `5_Gap_closing`. All additional outputs from CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are consolidated into a directory within the corresponding subdirectory of each step.
 
 ### 3.5. nohic-eval.sh: Assembly Evaluation and Visualization
 
-Quality of the final output assembly of `nohic-asm.sh` (from the `5_Gap_closing` directory) will be evaluated using `nohic-eval.sh`. The general usage of the subscript is as follows:
+The quality of the final output assembly produced by `nohic-asm.sh` (from the `5_Gap_closing` directory in our example) is evaluated using `nohic-eval.sh`. The general usage of this sub-script is as follows.
 
 ```
 nohic-eval.sh -i <scaffold.fa> -o <outdir> -t <threads> -b <BUSCO_lineage> -r <reads.fastq.gz> --coverage <sequencing_coverage> --sequencing-platform <pb|hifi|ont> --chr-name <chr_names.txt> --reference <ref.fa> [Options]
@@ -308,7 +312,7 @@ Other optional args:
       --version                                 Show version
 ```
 
-The following command will be run to evaluate the quality of the *A. thaliana* CAMA-C-2 scaffolded assembly.
+The following command is run to evaluate the quality of the scaffolded *A. thaliana* CAMA-C-2 assembly.
 
 ```
 nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa \
@@ -317,11 +321,11 @@ nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf
               --scale-factor 200000 --reference GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa
 ```
 
-Where, `ath_chr_names.txt` contains chromosome names (one per line) of the `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa` assembly (without `>`); `GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa` is the public assembly of CAMA-C-2 that we use as the control for structural correctness evaluation.  
+Here, `ath_chr_names.txt` contains the chromosome names (one per line) of the `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa` assembly (without `>`), and `GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa` is the public, manually curated CAMA-C-2 assembly used as the control for structural correctness evaluation.
 
 **Outputs**
 
-`nohic-eval.sh` stores outputs from each evaluation step as separate sub-directories inside `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval`.
+`nohic-eval.sh` stores the outputs from each evaluation step in separate subdirectories within `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval`.
 
 *1_Assembly_statistics*
 
@@ -335,7 +339,7 @@ Where, `ath_chr_names.txt` contains chromosome names (one per line) of the `CAMA
 
 *2_BUSCO*
 
-`busco_downloads`: this directory contain the downloaded BUSCO lineage database.
+`busco_downloads`: this directory contains the downloaded BUSCO lineage database.
 
 `busco.log`: the log file of this step.
 
@@ -351,7 +355,7 @@ Where, `ath_chr_names.txt` contains chromosome names (one per line) of the `CAMA
 
 `craq.log`: the log file of this step.
 
-`CSE.csv`: this file contains the CSEs (Clip-based Structural Errors). It has 4 columns, including scaffold name, starting position of a CSE, ending position of a CSE, and error type ("CSE"). This file will be combined with the errors identified by Inspector for misassembly visualization.
+`CSE.csv`: this file contains the CSEs (Clip-based Structural Errors). It has four columns, including scaffold name, starting position of a CSE, ending position of a CSE, and error type ("CSE"). It will be combined with the errors identified by Inspector for misassembly visualizations.
 
 `step_3_done.txt`: step completion marker
 
@@ -359,13 +363,13 @@ Where, `ath_chr_names.txt` contains chromosome names (one per line) of the `CAMA
 
 `All_inspector_outputs`: this directory contains all outputs from Inspector.
 
-`Assembly_statistics_Inspector.txt`: assembly quality metrics calculated by Inspector. You can find the quality value (QV) here.
+`Assembly_statistics_Inspector.txt`: this file contains the assembly quality metrics calculated by Inspector. You can find the quality value (QV) here.
 
-`small_scale_error.csv`: small scale errors identified by Inspector (BaseSubstitution, SmallCollapse, SmallExpansion...)
+`small_scale_error.csv`: this file contains small scale errors identified by Inspector (BaseSubstitution, SmallCollapse, SmallExpansion...)
 
-`structural_error.csv`: larger structural errors identified by Inspector
+`structural_error.csv`: this file contains larger structural errors identified by Inspector
 
-`inspector_errors.csv`: this file contains all Inspector-identified assembly errors from `small_scale_error.csv` and `structural_error.csv`. This is the file that will be combined with `3_CRAQ/CSE.csv` for assembly error visualization. It has the same 4 columns as `3_CRAQ/CSE.csv`.
+`inspector_errors.csv`: this file contains all the Inspector-identified assembly errors from `small_scale_error.csv` and `structural_error.csv`. It is the file that will be combined with `3_CRAQ/CSE.csv` for assembly error visualizations. It has the same four columns as `3_CRAQ/CSE.csv`.
 
 `inspector.log`: the log file of this step.
 
@@ -379,15 +383,15 @@ Where, `ath_chr_names.txt` contains chromosome names (one per line) of the `CAMA
 ./nohic-viz.R <chrom_lengths.csv> <misassemblies.csv> <output_prefix> <scale_factor>
 ```
 
-Where, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `length`). `misassemblies.csv` is the assembly error file with misassemblies from both CRAQ and Inspector. 
+Here, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `length`). `misassemblies.csv` is the assembly error file from both CRAQ and Inspector. 
 
-`paf2dotplot.R`: this the script used for constructing dot plot showing whole genome alignments between the input assembly and a reference genome. The script usage is in [this repository](https://github.com/moold/paf2dotplot?tab=readme-ov-file). 
+`paf2dotplot.R`: this is the script used for constructing a dot plot showing whole genome alignments between the input assembly and a reference genome. The script usage is in [this repository](https://github.com/moold/paf2dotplot?tab=readme-ov-file). 
 
 `chr_len.csv`: this file contains the chromosome lengths for misassembly visualizations.
 
 `error_to_plots.csv`: this file contains the combined misassemblies indetified by both CRAQ and Inspector.
 
-`plotted_errors.svg`: this file contains the  misassembly visualizations.
+`plotted_errors.svg`: the misassembly visualizations.
 
 `query_to_reference.paf`: the PAF file containing the alignments between the input and the reference.
 
@@ -436,7 +440,7 @@ Average segment length  4476156.90
 # paths 6
 ```
 
-In **our paper**, to highlight the benefit of synref in preventing contig fragmentations (in comparison with the assembly guided by a conventional reference - TAIR10.1), we calculated the in-chromosome continuity metrics before gap closing as follows.
+In **our paper**, to highlight the benefit of the synref in preventing contig fragmentation (in comparison with an assembly guided by a conventional reference, TAIR10.1), we calculated the in-chromosome continuity metrics before gap closing as follows.
 
 ```
 # scaffolds: 5
@@ -494,7 +498,7 @@ The results from BUSCO completeness evaluation of the CAMA-C-2 assembly are as f
 
 *Structural correctness*
 
-The AQIs and QV showing the strutural completeness of CAMA-C-2 are as follows.
+The AQIs and QV showing the strutural correctness of CAMA-C-2 are as follows.
 
 ```
 # From CRAQ:
@@ -514,11 +518,11 @@ Chr0_RagTag     2.74829845971613e-07    0.0079381874526949      0       0       
 QV      64.83304855386444
 ```
 
-The following figure shows the misassemblies in CAMA-C-2. 
+The following figure shows the remaining misassemblies in CAMA-C-2. 
 
 ![Arabidopsis_assembly_errors](https://github.com/andyngh/noHiC/blob/main/figures/error_synref.png)
 
-The resulting CAMA-C-2 assembly (y-axis) has strong strutural agreement to the public, manually curated assembly (x-axis).
+The resulting CAMA-C-2 assembly (y-axis) has strong strutural agreements with the public, manually curated assembly (x-axis).
 
 ![Arabidopsis_dot_plot](https://github.com/andyngh/noHiC/blob/main/figures/ara_synref_to_NCBI.paf.png)
 
