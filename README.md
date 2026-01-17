@@ -101,7 +101,8 @@ nohic-clean.sh -i CAMA-C-2.asm.bp.p_ctg.fa -a PacBio_adapter.txt -o CAMA-C-2.asm
 
 Here, `CAMA-C-2.asm.bp.p_ctg.fa` is the input contig file. `PacBio_adapter.txt` contains adapter sequences with no headers and one sequence per line. The reference mt- and cpDNA of *A. thaliana* are provided in `mt.cl.fasta`.
 
-**Note:** If you have root privileges on your machine and many contig-level assemblies to decontaminate, we recommend executing the following commands before running `nohic-clean` with `-m yes` and **no** `-kdb`. You can read [this page](https://avilpage.com/2024/07/mastering-kraken2-performance-optimisation.html) for more information regarding this matter.
+>[!NOTE]
+>If you have root privileges on your machine and many contig-level assemblies to decontaminate, we recommend executing the following commands before running `nohic-clean` with `-m yes` and **no** `-kdb`. You can read [this page](https://avilpage.com/2024/07/mastering-kraken2-performance-optimisation.html) for more information regarding this matter.
 
 ```
 # Resize your /dev/shm directory to fit the core_nt database
@@ -181,9 +182,11 @@ The `nohic-clean` sub-script will stop if it detects adapters.
 
 `step_4_done.txt`: step completion marker
 
-**Note 1:** If any step of `nohic-clean` fails, you can resume the sub-script using the same command with the additional `--resume` flag after fixing the errors and deleting all files in the subdirectory of the previously failed step.
+>[!NOTE]
+>If any step of `nohic-clean` fails, you can resume the sub-script using the same command with the additional `--resume` flag after fixing the errors and deleting all files in the subdirectory of the previously failed step.
 
-**Note 2:** In all noHiC sub-scripts, you can create a `step_*_done.txt` step completion marker containing the word “ok” to deliberately skip a mandatory step, though we do not guarantee that the sub-scripts are executed properly in this case.
+>[!NOTE]
+>In all noHiC sub-scripts, you can create a `step_*_done.txt` step completion marker containing the word “ok” to deliberately skip a mandatory step, though we do not guarantee that the sub-scripts are executed properly in this case.
 
 To prepare the clean contigs for scaffolding, we exclude contigs shorter than 100 kb (as described in [this paper](https://doi.org/10.1038/s41586-023-06062-z)).
 
@@ -229,9 +232,11 @@ The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were gene
 
 `nohic-refpick.sh` also creates a supplemental directory named `CAMA-C-2.refpick_outdir`, which contains k-mers from the CAMA-C-2 HiFi reads in [KFF](https://github.com/Kmer-File-Format/kff-reference) format (`CAMA-C-2.kff`) and a personalized graph for CAMA-C-2 (`CAMA-C-2.gbz`).
 
-**Note 1:** If you use the `draft` and `luck` presets of `nohic-asm.sh` (see Subsection 3.4 below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
+>[!NOTE]
+>If you use the `draft` and `luck` presets of `nohic-asm.sh` (see Subsection 3.4 below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
 
-**Note 2:** If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch).
+>[!NOTE]
+>If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch).
 
 ### 3.4. nohic-asm.sh: Scaffolding Clean Contigs Based on a Reference Genome
 
@@ -273,9 +278,11 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -
 
 The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGapcloser (via the `--*-params` arguments) are mainly used to specify the sequencing platform. You should consult the original manuals of these dependencies to determine the appropriate optional parameters to use in your own assembly project.
 
-**Note 1:** Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index.
+>[!NOTE]
+>Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index.
 
-**Note 2:** We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
+>[!NOTE]
+>We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
 
 #### **<ins>nohic-asm Outputs</ins>**
 
