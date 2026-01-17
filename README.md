@@ -183,7 +183,7 @@ The `nohic-clean` sub-script will stop if it detects adapters.
 `step_4_done.txt`: step completion marker
 
 >[!NOTE]
->If any step of `nohic-clean` fails, you can resume the sub-script using the same command with the additional `--resume` flag after fixing the errors and deleting all files in the subdirectory of the previously failed step.
+>In all noHiC sub-scripts, if any step fails, you can resume the sub-script using the same command with the additional `--resume` flag after fixing the errors and deleting all files in the subdirectory of the previously failed step.
 
 >[!NOTE]
 >In all noHiC sub-scripts, you can create a `step_*_done.txt` step completion marker containing the word “ok” to deliberately skip a mandatory step, though we do not guarantee that the sub-scripts are executed properly in this case.
