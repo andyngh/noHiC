@@ -115,7 +115,7 @@ sudo mount -o remount,size=244G /dev/shm
 cp /path/to/your/database/directory/*.k2d /dev/shm/
 ```
 
-**<ins>nohic-clean Outputs</ins>**
+#### **<ins>nohic-clean Outputs</ins>**
 
 `nohic-clean.sh` creates four subdirectories within the common output directory `CAMA-C-2.asm.bp.p_ctg.cleaning`. The output files in these subdirectories are as follows.
 
@@ -223,7 +223,7 @@ nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz -g arabidopsis_
 
 The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were generated using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph includes TAIR10.1 as the reference genome and 47 additional assemblies (excluding CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
 
-**<ins>nohic-refpick Outputs</ins>**
+#### **<ins>nohic-refpick Outputs</ins>**
 
 `CAMA-C-2.synref.fasta`: this is the synref for CAMA-C-2 that is written to the current working directory. We recommend removing the `#` character from the sequence headers before using the synref.
 
@@ -277,7 +277,7 @@ The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGap
 
 **Note 2:** We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
 
-**<ins>nohic-asm Outputs</ins>**
+#### **<ins>nohic-asm Outputs</ins>**
 
 `nohic-asm` consists of five steps, and the outputs are organized into five corresponding subdirectories: `1_CRAQ`, `2_Inspector`, `3_RagTag_correct`, `4_Scaffolding`, and `5_Gap_closing`. The main outputs of each step are FASTA files representing contigs at specific stages of correction (for example, `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.fa` contains contigs corrected by CRAQ, Inspector, and RagTag correct). If gap closing is not performed, the final scaffolded assembly should be obtained from `4_Scaffolding`; otherwise, the final assembly will be located in `5_Gap_closing`. All additional outputs from CRAQ, Inspector, RagTag correct, RagTag scaffold, and TGSGapcloser are consolidated into a directory within the corresponding subdirectory of each step.
 
@@ -323,7 +323,7 @@ nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf
 
 Here, `ath_chr_names.txt` contains the chromosome names (one per line) of the `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa` assembly (without `>`), and `GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa` is the public, manually curated CAMA-C-2 assembly used as the control for structural correctness evaluation.
 
-**<ins>nohic-eval Outputs</ins>**
+#### **<ins>nohic-eval Outputs</ins>**
 
 `nohic-eval.sh` stores the outputs from each evaluation step in separate subdirectories within `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval`.
 
@@ -399,7 +399,7 @@ Here, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `leng
 
 `step_5_done.txt`: step completion marker
 
-**Evaluation results**
+#### Evaluation results
 
 *Continuity metrics*
 
