@@ -121,7 +121,7 @@ cp /path/to/your/database/directory/*.k2d /dev/shm/
 
 *1_adapter_content_check*
 
-In the case where there is no adapter in the contigs:
+**In the case where there is no adapter in the contigs:**
 
 `adapter_check.log`: the log file of the adapter detection step.
 
@@ -131,7 +131,7 @@ In the case where there is no adapter in the contigs:
 
 `step_1_done.txt`: step completion marker. It will say "ok" if there is no adapter detected.
 
-In the case where there are adapters in the contigs:
+**In the case where there are adapters in the contigs:**
 
 The `nohic-clean` sub-script will stop if it detects adapters.
 
