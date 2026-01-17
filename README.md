@@ -115,7 +115,7 @@ sudo mount -o remount,size=244G /dev/shm
 cp /path/to/your/database/directory/*.k2d /dev/shm/
 ```
 
-**Outputs**
+**<ins>Outputs</ins>**
 
 `nohic-clean.sh` creates four subdirectories within the common output directory `CAMA-C-2.asm.bp.p_ctg.cleaning`. The output files in these subdirectories are as follows.
 
