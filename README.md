@@ -273,7 +273,7 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -
 
 The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGapcloser (via the `--*-params` arguments) are mainly used to specify the sequencing platform. You should consult the original manuals of these dependencies to determine the appropriate optional parameters to use in your own assembly project.
 
-**Note 1:** Please use our **Inspector fork** if you have contigs that are longer than the stated limit of the BAI index.
+**Note 1:** Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index.
 
 **Note 2:** We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
 
