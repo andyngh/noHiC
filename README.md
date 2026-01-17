@@ -3,7 +3,7 @@ Personalized reference-guided contig scaffolding pipeline with no Hi-C data
 
 ## 1. Introduction
 
-### 1.1. noHiC workflow
+### 1.1. noHiC Workflow
 
 noHiC is a reference-guided genome assembly pipeline that covers essential steps in contig scaffolding through four independent sub-scripts, including contig decontamination (`nohic-clean`), misassembly correction, reference-guided contig scaffolding (`nohic-refpick` and `nohic-asm`), and assembly evaluation (`nohic-eval`). Given an input FASTA file containing a contig-level assembly, the pipeline starts by removing contigs that do not originate from a specified taxonomic group and, optionally, organellar contigs. Afterward, misassemblies in the selected contigs are corrected using three different approaches with **error-corrected** long reads (each step can be skipped), including clip-based chimeric contig breaking by [CRAQ](https://github.com/JiaoLaboratory/CRAQ/tree/main), correction of small misassemblies (base substitutions, expansions, collapses, and haplotype switches) by [Inspector](https://github.com/Maggi-Chen/Inspector), and reference-guided misjoin breaking by [RagTag correct](https://github.com/malonge/RagTag/wiki/correct). The corrected contigs are then scaffolded against a reference genome using [RagTag scaffold](https://github.com/malonge/RagTag/wiki/scaffold).
 
@@ -11,7 +11,7 @@ The most important feature of noHiC is that users can utilize publicly available
 
 ![noHiC workflow](https://github.com/andyngh/noHiC/blob/main/Fig1.png)
 
-### 1.2. Dependency citations
+### 1.2. Dependency Citations
 
 Please cite the following tools along with their dependencies if you use the noHiC pipeline.
 
@@ -31,7 +31,7 @@ Please cite the following tools along with their dependencies if you use the noH
 
 [gfastats v1.3.11](https://doi.org/10.1093/bioinformatics/btac460), [bioawk v1.0](https://github.com/lh3/bioawk), [BUSCO v6.0.0](https://doi.org/10.1093/nar/gkae987), [ggplot2 v4.0.0](https://doi.org/10.1007/978-3-319-24277-4), [readr v2.1.5](https://readr.tidyverse.org/), [dplyr v1.1.4](https://dplyr.tidyverse.org/), and [paf2dotplot v1.0.1](https://github.com/moold/paf2dotplot?tab=readme-ov-file)
 
-### 1.3. noHiC citation
+### 1.3. noHiC Citation
 
 ## 2. Installation
 
@@ -399,7 +399,7 @@ Here, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `leng
 
 `step_5_done.txt`: step completion marker
 
-#### Evaluation results
+#### Evaluation Results
 
 *Continuity metrics*
 
