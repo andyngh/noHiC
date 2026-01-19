@@ -55,7 +55,8 @@ In the benchmarks of **our paper**, 90% of the CAMA-C-2 reads are used for assem
 
 ```
 # 10% for final assembly evaluation
-seqkit sample -p 0.10 -j 100 -s 3108 CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz -o CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz
+seqkit sample -p 0.10 -j 100 -s 3108 CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz \
+              -o CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz
 
 # 90% for synref generation, contig correction, and scaffolding
 seqkit grep -v -f <(zcat CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz | sed -n '1~4s/^@//p') \
