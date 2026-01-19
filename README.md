@@ -95,7 +95,9 @@ tar -xzf ./k2_core_nt_20251015.tar.gz
 Now, we remove any contigs that are not from green plants (Viridiplantae) as well as organellar contigs.
 
 ```
-nohic-clean.sh -i CAMA-C-2.asm.bp.p_ctg.fa -a PacBio_adapter.txt -o CAMA-C-2.asm.bp.p_ctg.cleaning -t 30 -kp CAMA-C-2 -tg Viridiplantae -ioc yes -ros mt.cl.fasta \
+nohic-clean.sh -i CAMA-C-2.asm.bp.p_ctg.fa -a PacBio_adapter.txt \
+               -o CAMA-C-2.asm.bp.p_ctg.cleaning -t 30 -kp CAMA-C-2 \
+               -tg Viridiplantae -ioc yes -ros mt.cl.fasta \
                -m no -kdb absolute/path/to/kraken2_core_nt_db/
 ```
 
@@ -220,8 +222,9 @@ Optional:
 The following command is run to create a synref for CAMA-C-2
 
 ```
-nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz -g arabidopsis_pgMC.full.gbz \
-                 -i arabidopsis_pgMC.full.hapl -o CAMA-C-2 -t 100 -m 182 -p no
+nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
+                 -g arabidopsis_pgMC.full.gbz -i arabidopsis_pgMC.full.hapl \
+                 -o CAMA-C-2 -t 100 -m 182 -p no
 ```
 
 The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were generated using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph includes TAIR10.1 as the reference genome and 47 additional assemblies (excluding CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
@@ -271,9 +274,12 @@ Optional:
 We run the following command to correct and scaffold the clean *A. thaliana* CAMA-C-2 contigs.
 
 ```
-nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta -o CAMA-C-2_syn_ref_luck.asm -fq CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
-             -cov 63 -t 100 --run-gap-closing yes -p luck --craq-params "-t 94 -x map-hifi"  --inspector-params "--datatype hifi" \
-             --inspector-correct-params "--datatype pacbio-hifi" --ragtag-correct-params "-T corr" --ragtag-scf-params "-C -r -g 2" --tgsgapcloser-params "--tgstype pb"
+nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta \
+             -o CAMA-C-2_syn_ref_luck.asm -fq CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
+             -cov 63 -t 100 --run-gap-closing yes -p luck --craq-params "-t 94 -x map-hifi"  \
+             --inspector-params "--datatype hifi" --inspector-correct-params "--datatype pacbio-hifi" \
+             --ragtag-correct-params "-T corr" --ragtag-scf-params "-C -r -g 2" \
+             --tgsgapcloser-params "--tgstype pb"
 ```
 
 The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGapcloser (via the `--*-params` arguments) are mainly used to specify the sequencing platform. You should consult the original manuals of these dependencies to determine the appropriate optional parameters to use in your own assembly project.
@@ -324,8 +330,9 @@ The following command is run to evaluate the quality of the scaffolded *A. thali
 ```
 nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa \
               -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval \
-              -t 100 -b embryophyta_odb12 -r CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz --coverage 7 -p hifi --chr-name ath_chr_names.txt \
-              --scale-factor 200000 --reference GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa
+              -t 100 -b embryophyta_odb12 -r CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz \
+              --coverage 7 -p hifi --chr-name ath_chr_names.txt --scale-factor 200000 \
+              --reference GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa
 ```
 
 Here, `ath_chr_names.txt` contains the chromosome names (one per line) of the `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa` assembly (without `>`), and `GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa` is the public, manually curated CAMA-C-2 assembly used as the control for structural correctness evaluation.
