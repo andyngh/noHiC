@@ -237,7 +237,7 @@ The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were gene
 `nohic-refpick.sh` also creates a supplemental directory named `CAMA-C-2.refpick_outdir`, which contains k-mers from the CAMA-C-2 HiFi reads in [KFF](https://github.com/Kmer-File-Format/kff-reference) format (`CAMA-C-2.kff`) and a personalized graph for CAMA-C-2 (`CAMA-C-2.gbz`).
 
 >[!NOTE]
->If you use the `draft` and `luck` presets of `nohic-asm.sh` (see Subsection 3.4 below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
+>If you use the `draft` and `luck` presets of `nohic-asm.sh` (see [Subsection 3.4](https://github.com/andyngh/noHiC/tree/main?tab=readme-ov-file#34-nohic-asmsh-scaffolding-clean-contigs-based-on-a-reference-genome) below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
 
 >[!NOTE]
 >If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch).
