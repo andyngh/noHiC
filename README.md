@@ -285,6 +285,9 @@ nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta \
 
 The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGapcloser (via the `--*-params` arguments) are mainly used to specify the sequencing platform. You should consult the original manuals of these dependencies to determine the appropriate optional parameters to use in your own assembly project.
 
+>[!CAUTION]
+>Although `standard` is the default correction preset, it **should not** be the initial choice, as it forces sequence arrangements in your target genome to match the reference, thereby producing many breaks. Thus, `standard` should only be used if you have a highly contiguous reference genome that is genetically close (distance < 1%) to the target assembly. The minimap2-based preset `luck` is a good starting point, since under favorable conditions it can correct all large-scale misassemblies.
+   
 >[!NOTE]
 >Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index.
 
