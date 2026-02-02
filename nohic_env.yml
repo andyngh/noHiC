@@ -1,0 +1,48 @@
+name: noHiC
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # Core language
+  - python=3.10
+  - r-base=4.3
+
+  # Taxonomy & contamination
+  - kraken2
+  - taxonkit
+
+  # Alignment & mapping
+  - blast
+  - minimap2
+  - samtools
+  - mummer4
+
+  # k-mer & graph tools
+  - kmc
+  - vg=1.65.0
+
+  # Assembly / polishing / gap closing
+  - gpatch
+  - craq
+  - inspector
+  - ragtag
+  - tgsgapcloser
+
+  # Sequence utilities
+  - seqkit
+  - bioawk
+  - gfastats
+
+  # QC & assessment
+  - busco
+
+  # Python bio
+  - biopython
+
+  # R tidyverse-style tools
+  - r-ggplot2
+  - r-readr
+  - r-dplyr
+  - r-optparse
+  - r-rcolorbrewer
