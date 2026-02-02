@@ -35,6 +35,38 @@ Please cite the following tools along with their dependencies if you use the noH
 
 ## 2. Installation
 
+Step 1: Clone the repository
+
+Clone the noHiC repository and navigate into the project directory:
+
+```
+git clone https://github.com/andyngh/noHiC.git
+cd noHiC
+```
+
+Step 2: Create and activate the conda environment
+
+Create the required conda environment using the provided YAML file, then activate it:
+
+```
+conda env create -f nohic_env.yml
+conda activate noHiC
+```
+
+Step 3: Install pipeline scripts
+
+To make the pipeline scripts globally accessible within the noHiC environment, copy all shell scripts from the scripts directory into the environment’s bin directory.
+
+Example paths are shown below (adjust according to your conda installation):
+
+```
+cp scripts/*.sh /path/to/anaconda3/envs/noHiC/bin/
+# or, for Miniforge
+cp scripts/*.sh /path/to/miniforge/envs/noHiC/bin/
+```
+
+After this step, the scripts can be executed directly from the command line when the noHiC environment is active.
+
 ## 3. Tutorial
 
 To guide users through the sub-scripts of noHiC, we provide a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with all essential files available at [https://github.com/andyngh/noHiC/blob/main/example](https://github.com/andyngh/noHiC/blob/main/example). In this example, we aim to replicate the manually curated CAMA-C-2 assembly from [this paper](https://doi.org/10.1038/s41586-023-06062-z) using noHiC.
