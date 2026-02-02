@@ -272,7 +272,7 @@ The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were gene
 >If you use the `draft` and `luck` presets of `nohic-asm.sh` (see [Subsection 3.4](https://github.com/andyngh/noHiC/tree/main?tab=readme-ov-file#34-nohic-asmsh-scaffolding-clean-contigs-based-on-a-reference-genome) below), patching the synref is not necessary. However, if you plan to use Nucmer-based correction presets (e.g. `standard`), we highly recommend patching the synref using a highly contiguous donor genome.
 
 >[!NOTE]
->If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch).
+>If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch). First, remove the `GPatch` script from the `bin` directory of the `noHiC` conda environment. Then, download the `GPatch.py` script from the fork, remove the `.py` extension from the file name, change the script permissions (`chmod +x GPatch`), and finally place the new `GPatch` script into the `bin` directory.
 
 ### 3.4. nohic-asm.sh: Scaffolding Clean Contigs Based on a Reference Genome
 
@@ -321,7 +321,7 @@ The optional parameters provided for CRAQ, Inspector, RagTag correct, and TGSGap
 >Although `standard` is the default correction preset, it **should not** be the initial choice, as it forces sequence arrangements in your target genome to match the reference, thereby producing many breaks. Thus, `standard` should only be used if you have a highly contiguous reference genome that is genetically close (distance < 1%) to the target assembly. The minimap2-based preset `luck` is a good starting point, since under favorable conditions it can correct all large-scale misassemblies.
    
 >[!NOTE]
->Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index.
+>Please use our [Inspector fork](https://github.com/andyngh/Inspector.git) if you have contigs that are longer than the stated limit of the BAI index. First, remove the old `inspector.py` script from the `bin` directory of the `noHiC` conda environment. Then, download the new `inspector.py` script from the fork, change the script permissions (`chmod +x inspector.py`), and finally place the new `inspector.py` script into the `bin` directory.
 
 >[!NOTE]
 >We recommend running CRAQ with 5–6 fewer threads than the total number of threads specified for the sub-script. CRAQ runs `samtools` (which requires 5 threads) in parallel with its main command. Therefore, setting CRAQ’s thread number equal to that of `nohic-asm` (100 in this example) will likely cause the sub-script to crash.
