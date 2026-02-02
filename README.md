@@ -35,7 +35,7 @@ Please cite the following tools along with their dependencies if you use the noH
 
 ## 2. Installation
 
-Step 1: Clone the repository
+**Step 1:** Clone the repository
 
 Clone the noHiC repository and navigate into the project directory:
 
@@ -44,7 +44,7 @@ git clone https://github.com/andyngh/noHiC.git
 cd noHiC
 ```
 
-Step 2: Create and activate the conda environment
+**Step 2:** Create and activate the conda environment
 
 Create the required conda environment using the provided YAML file, then activate it:
 
@@ -53,7 +53,7 @@ conda env create -f nohic_env.yml
 conda activate noHiC
 ```
 
-Step 3: Install pipeline scripts
+**Step 3:** Install pipeline scripts
 
 To make the pipeline scripts globally accessible within the noHiC environment, copy all shell scripts from the scripts directory into the environment’s bin directory.
 
