@@ -14,6 +14,9 @@ GBZ_IN=""
 HAP_INDEX=""
 VERBOSITY=2
 
+PATCH="yes"
+REFERENCE=""
+
 print_help() {
   cat <<'EOF'
 nohic-refpick v1.0 — Build a synthetic reference from a pangenome graph
@@ -30,6 +33,8 @@ Optional:
   -m, --ram-gb  <int>                   Maximum memory for KMC in GB (default: 32)
   -k, --kmer    <int>                   k-mer size for KMC (default: 29)
   -v, --verbosity <int>                 vg verbosity level (0 = silent, 1 = basic, 2 = detailed, 3 = debug; default: 2)
+  -p, --patch <yes|no>                  Run personalized reference patching step (default: yes)
+  -r, --reference <.fasta>              Reference fasta for patching (required if --patch yes)
   -h, --help                            Display this help message
       --version                         Display version number
 
@@ -37,8 +42,8 @@ EOF
 }
 
 # Args
-PARSED=$(getopt -o s:g:i:o:t:m:k:v:h \
-  --long input-sequence:,gbz:,hapidx:,outprefix:,threads:,ram-gb:,kmer:,verbosity:,help,version \
+PARSED=$(getopt -o s:g:i:o:t:m:k:v:p:r:h \
+  --long input-sequence:,gbz:,hapidx:,outprefix:,threads:,ram-gb:,kmer:,verbosity:,patch:,reference:,help,version \
   -n nohic-refpick -- "$@") || { echo "Error: failed to parse options"; exit 2; }
 eval set -- "$PARSED"
 
@@ -52,6 +57,8 @@ while true; do
     -m|--ram-gb)    RAM_GB=$2; shift 2 ;;
     -k|--kmer)      K=$2; shift 2 ;;
     -v|--verbosity) VERBOSITY=$2; shift 2 ;;
+    -p|--patch)     PATCH=$2; shift 2 ;;
+    -r|--reference) REFERENCE=$2; shift 2 ;;
     -h|--help)      print_help; exit 0 ;;
        --version)
          echo "${VERSION}"
@@ -66,6 +73,16 @@ done
 [[ -z "$GBZ_IN"    ]] && { echo "Error: --gbz is required"; exit 2; }
 [[ -z "$HAP_INDEX" ]] && { echo "Error: --hapidx is required"; exit 2; }
 [[ -z "$OUTPREFIX" ]] && { echo "Error: --outprefix is required"; exit 2; }
+
+if [[ "$PATCH" != "yes" && "$PATCH" != "no" ]]; then
+  echo "Error: --patch must be \"yes\" or \"no\" (got: $PATCH)"
+  exit 2
+fi
+
+if [[ "$PATCH" == "yes" && -z "${REFERENCE:-}" ]]; then
+  echo "Error: --reference is required when --patch yes"
+  exit 2
+fi
 
 [[ -f "$CONTIGS"   ]] || { echo "Error: input sequence file not found: $CONTIGS"; exit 1; }
 [[ -f "$GBZ_IN"    ]] || { echo "Error: GBZ file not found: $GBZ_IN"; exit 1; }
@@ -126,7 +143,122 @@ echo "[INFO] Extracting synthetic reference"
 
 vg paths -t "$THREADS" --extract-fasta -x "$GBZ_OUT" --paths-by recombination > "$FASTA_OUT"
 
-echo "[INFO] nohic-refpick completed."
+echo "[INFO] personalized reference generation completed."
 echo "Outputs:"
 echo "  $FASTA_OUT"
 echo "  $OUTDIR/ (intermediates: .kff, .gbz)"
+
+if [[ "$PATCH" == "yes" ]]; then
+
+  ASM_DECOMP_SCRIPT="$OUTDIR/Asm_Decomposing.sh"
+  cat <<'EOF_ASM_DECOMP' > "$ASM_DECOMP_SCRIPT"
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 <assembly.fasta> [output.fasta]" >&2
+    exit 1
+fi
+
+IN="$1"
+OUT="${2:-/dev/stdout}"
+
+awk -v OFS="" '
+BEGIN {
+    # No contig yet
+}
+
+# Header line: start a new scaffold
+/^>/ {
+    # Flush any previous scaffold sequence
+    if (seq != "") {
+        process_seq(scaf_id, seq)
+    }
+    # Get scaffold ID (up to first whitespace)
+    scaf_id = $1
+    sub(/^>/, "", scaf_id)
+    sub(/ .*/, "", scaf_id)
+
+    # Reset sequence and contig counter for this scaffold
+    seq = ""
+    ctg_idx = 0
+    next
+}
+
+# Sequence lines: append (remove whitespace and make uppercase)
+{
+    gsub(/[ \t\r\n]/, "", $0)
+    if ($0 != "") {
+        seq = seq toupper($0)
+    }
+    next
+}
+
+END {
+    # Flush last scaffold
+    if (seq != "") {
+        process_seq(scaf_id, seq)
+    }
+}
+
+# Function to process one scaffold sequence: split on Ns, output contigs
+function process_seq(id, s,   i, len, start, in_block, base, seg) {
+    len = length(s)
+    start = 1
+    in_block = 0
+
+    for (i = 1; i <= len; i++) {
+        base = substr(s, i, 1)
+        if (base != "N") {
+            if (!in_block) {
+                # Start new contig
+                start = i
+                in_block = 1
+            }
+        } else {
+            # base == N: end of a contig block if we were in one
+            if (in_block) {
+                seg = substr(s, start, i - start)
+                output_contig(id, seg)
+                in_block = 0
+            }
+        }
+    }
+
+    # Trailing contig block to end of sequence
+    if (in_block) {
+        seg = substr(s, start, len - start + 1)
+        output_contig(id, seg)
+    }
+}
+
+# Output a contig with proper name, skipping empty segments
+function output_contig(id, seq_seg,   header) {
+    if (length(seq_seg) == 0) {
+        return
+    }
+    ctg_idx++
+    header = ">ctg" ctg_idx "_" id
+    print header
+    # Wrap sequence at 60 bp per line (FASTA formatting)
+    line_len = 60
+    for (pos = 1; pos <= length(seq_seg); pos += line_len) {
+        print substr(seq_seg, pos, line_len)
+    }
+}
+' "$IN" > "$OUT"
+EOF_ASM_DECOMP
+  chmod +x "$ASM_DECOMP_SCRIPT"
+
+  SYNREF_CTGS="${OUTPREFIX}.synref.ctgs.fasta"
+  echo "[INFO] Decomposing personalized reference into contigs: $SYNREF_CTGS"
+  "$ASM_DECOMP_SCRIPT" "$FASTA_OUT" "$SYNREF_CTGS"
+
+  echo "[INFO] Patching in progress"
+  minimap2 -t "$THREADS" -a -x asm10 "$REFERENCE" "$SYNREF_CTGS" > synref.sam
+  samtools view -bS -@ "$THREADS" synref.sam > synref.bam
+  GPatch -q synref.bam -r "$REFERENCE" -x "${OUTPREFIX}.synref"
+  rm synref.sam *.bam *.csi
+
+  echo "[INFO] Patching completed."
+fi
