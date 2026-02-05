@@ -365,7 +365,7 @@ The following command is run to evaluate the quality of the scaffolded *A. thali
 
 ```
 nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa \
-              -o CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval \
+              -o CAMA-C-2.asm.eval \
               -t 100 -b embryophyta_odb12 -r CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz \
               --coverage 7 -p hifi --chr-name ath_chr_names.txt --scale-factor 200000 \
               --reference GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa
@@ -375,7 +375,7 @@ Here, `ath_chr_names.txt` contains the chromosome names (one per line) of the `C
 
 #### **<ins>nohic-eval Outputs</ins>**
 
-`nohic-eval.sh` stores the outputs from each evaluation step in separate subdirectories within `CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.eval`.
+`nohic-eval.sh` stores the outputs from each evaluation step in separate subdirectories within `CAMA-C-2.asm.eval`.
 
 *1_Assembly_statistics*
 
