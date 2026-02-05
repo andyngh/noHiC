@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="nohic-refpick v1.0"
+VERSION="v1.0.0"
 
 # Default parameters
 
@@ -19,7 +19,7 @@ REFERENCE=""
 
 print_help() {
   cat <<'EOF'
-nohic-refpick v1.0 — Build a synthetic reference from a pangenome graph
+nohic-refpick v1.0.0 — Build a synthetic reference from a pangenome graph
 _______________________________________________________________________
 
 Required:
