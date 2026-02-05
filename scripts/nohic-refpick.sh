@@ -256,9 +256,9 @@ EOF_ASM_DECOMP
 
   echo "[INFO] Patching in progress"
   minimap2 -t "$THREADS" -a -x asm10 "$REFERENCE" "$SYNREF_CTGS" > synref.sam
-  samtools view -bS -@ "$THREADS" synref.sam > synref.bam
-  GPatch -q synref.bam -r "$REFERENCE" -x "${OUTPREFIX}.synref"
-  rm synref.sam *.bam *.csi
+  samtools view -bS -@ "$THREADS" synref.sam > synref_to_donor_aln.bam
+  GPatch -q synref_to_donor_aln.bam -r "$REFERENCE" -x "${OUTPREFIX}.synref"
+  rm synref.sam
 
   echo "[INFO] Patching completed."
 fi
