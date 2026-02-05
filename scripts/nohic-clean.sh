@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
-#-------------------#
-# nohic-clean v1.0  #
-#-------------------#
+#--------------------#
+# nohic-clean v1.0.0 #
+#--------------------#
 
 usage() {
   cat <<EOF
-nohic-clean v1.0 - Contig decontamination pipeline
+nohic-clean v1.0.0 - Contig decontamination pipeline
 ___________________________________________________
 
 Usage: $0 -i <contig.fa> -a <adapter.txt> -o <common_out> -t <threads> -kp <kp_prefix> -tg <taxonomic_group> [-ros <mt.cl.fasta>] [-ioc yes|no] [-m yes|no] [-kdb <kraken2_db_dir>] [--resume]
