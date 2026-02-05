@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ------------------------------------------------------------------#
-#                       nohic-asm v1.6                              #
+#                       nohic-asm v1.0.0                            #
 # ------------------------------------------------------------------#
 
 # --- Traps --------------------------------------------------------
@@ -153,7 +153,7 @@ check_step_logs() {
 # -----------------------------------------------------------------------------#
 if [[ $# -eq 0 ]]; then
   cat <<'EOF'
-nohic-asm v1.6 - Contig correction and scaffolding pipeline
+nohic-asm v1.0.0 - Contig correction and scaffolding pipeline
 _____________________________________________________________
 
 Usage: ./nohic-asm.sh -c <contigs.fa> -r <ref.fa> -o <outdir> [options]
