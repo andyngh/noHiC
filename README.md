@@ -277,6 +277,29 @@ The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were gene
 >[!NOTE]
 >If you have large contigs that exceed [the limit](https://open.bioqueue.org/home/knowledge/showKnowledge/sig/samtools-index) of the BAI index, patching the synref will not work. In that case, please use our [GPatch fork](https://github.com/andyngh/GPatch). First, remove the `GPatch` script from the `bin` directory of the `noHiC` conda environment. Then, download the `GPatch.py` script from the fork, remove the `.py` extension from the file name, change the script permissions (`chmod +x GPatch`), and finally place the new `GPatch` script into the `bin` directory.
 
+>[!NOTE]
+>If a pangenome graph is publicly available in GFA format, the following commands can be used to generate `.gbz` and `.hapl` files from the GFA file. These commands are applicable only to GFA files produced by Minigraph-Cactus.
+
+```
+# Convert GFA pangenome graph to GBZ format.
+vg gbwt --num-threads thread_num --gbz-format -G graph.gfa -g graph.gbz
+
+# Set reference sample for the GBZ graph
+vg gbwt --num-threads thread_num -Z --set-reference reference_sample_name --gbz-format -g graph.ref.gbz graph.gbz
+
+# Build snarls file
+vg snarls -t thread_num graph.ref.gbz > graph.snarls
+
+# Build ri index
+vg gbwt  -p --num-threads thread_num -r graph.ri -Z graph.ref.gbz
+
+# Build dist index
+vg index -p -t thread_num -j graph.dist --no-nested-distance graph.ref.gbz
+
+# Build hapl index
+vg haplotypes -v 2 -t thread_num -d graph.dist -r graph.ri -H graph.hapl graph.ref.gbz
+```
+
 ### 3.4. nohic-asm.sh: Scaffolding Clean Contigs Based on a Reference Genome
 
 Once the clean contigs and synref are ready, we can proceed with contig error correction and scaffolding using `nohic-asm.sh`. The general usage of this sub-script is as follows (please read **our paper** to understand the options for contig correction).
