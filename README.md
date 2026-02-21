@@ -71,7 +71,7 @@ cp scripts/*.sh /path/to/miniforge/envs/noHiC/bin/
 After this step, the scripts can be executed directly from the command line when the `noHiC` environment is active.
 
 >[!NOTE]
->Please run the following command to execute CRAQ steps in `nohic-asm.sh` and `nohic-eval.sh` without errors.
+>Please run the following commands to execute CRAQ steps in `nohic-asm.sh` and `nohic-eval.sh` without errors.
 
 ```
 mkdir /path/to/anaconda3/envs/noHiC/src
