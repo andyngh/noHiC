@@ -70,6 +70,17 @@ cp scripts/*.sh /path/to/miniforge/envs/noHiC/bin/
 
 After this step, the scripts can be executed directly from the command line when the `noHiC` environment is active.
 
+>[!NOTE]
+>Please run the following command to execute CRAQ steps in `nohic-asm.sh` and `nohic-eval.sh` without errors.
+
+```
+mkdir /path/to/anaconda3/envs/noHiC/src
+ln -s /path/to/anaconda3/envs/noHiC/share/CRAQ/* /path/to/anaconda3/envs/noHiC/src/
+# or, for Miniforge
+mkdir /path/to/miniforge/envs/noHiC/src
+ln -s /path/to/miniforge/envs/noHiC/share/CRAQ/* /path/to/miniforge/envs/noHiC/src
+```
+
 ## 3. Tutorial
 
 To guide users through the sub-scripts of noHiC, we provide a small example of *A. thaliana* CAMA-C-2 contig scaffolding, with all essential files available at [https://github.com/andyngh/noHiC/blob/main/example](https://github.com/andyngh/noHiC/blob/main/example). In this example, we aim to replicate the manually curated CAMA-C-2 assembly from [this paper](https://doi.org/10.1038/s41586-023-06062-z) using noHiC.
