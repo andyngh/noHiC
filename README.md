@@ -78,7 +78,7 @@ mkdir /path/to/anaconda3/envs/noHiC/src
 ln -s /path/to/anaconda3/envs/noHiC/share/CRAQ/* /path/to/anaconda3/envs/noHiC/src/
 # or, for Miniforge
 mkdir /path/to/miniforge/envs/noHiC/src
-ln -s /path/to/miniforge/envs/noHiC/share/CRAQ/* /path/to/miniforge/envs/noHiC/src
+ln -s /path/to/miniforge/envs/noHiC/share/CRAQ/* /path/to/miniforge/envs/noHiC/src/
 ```
 
 ## 3. Tutorial
