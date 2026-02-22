@@ -13,17 +13,17 @@ Usage: $0 -i <contig.fa> -a <adapter.txt> -o <common_out> -t <threads> -kp <kp_p
 Required:
   -i, --input-fasta <.fa|.fasta>                              FASTA file with raw input contigs 
   -a, --adapter-sequence <.txt>               	              A text file containing adapter sequences (one adapter per line)
-  -o, --output-directory <dir>               	                Common output directory for storing results from contig cleaning steps
-  -t, --threads <int>                        	                Thread number for kraken2 and blastn
-  -kp, --prefix-for-taxonomic-classification <str>  	        Prefix for kraken2 outputs (e.g. sample_1)
-  -tg, --taxonomic-group <str>               		              Include contigs from this taxonomic group (e.g. Viridiplantae, Bacteria, Mammalia...)
+  -o, --output-directory <dir>               	              Common output directory for storing results from contig cleaning steps
+  -t, --threads <int>                        	              Thread number for kraken2 and blastn
+  -kp, --prefix-for-taxonomic-classification <str>  	      Prefix for kraken2 outputs (e.g. sample_1)
+  -tg, --taxonomic-group <str>               		      Include contigs from this taxonomic group (e.g. Viridiplantae, Bacteria, Mammalia...)
 Optional:
   -ros, --reference-organellar-sequences <.fa|.fasta>  	      FASTA file containing reference organellar DNA sequences 
-  -ioc, --identify-organellar-contigs <yes|no>    	          Check if there is organellar DNA in the contigs (Default: no)
+  -ioc, --identify-organellar-contigs <yes|no>    	      Check if there is organellar DNA in the contigs (Default: no)
   -m,  --memory-mapping <yes|no>                              Use --memory-mapping option of kraken2 (Default: yes)
   -kdb, --kraken2-database <dir>                              Path to the directory containing a kraken2 database (*.k2d files) (required if -m no)
-  --resume                            		                    Resume the pipeline from the earliest failed steps
-  -h|--help                           		                    Display this help message
+  --resume                            		              Resume the pipeline from the earliest failed steps
+  -h|--help                           		              Display this help message
 EOF
   exit 1
 }

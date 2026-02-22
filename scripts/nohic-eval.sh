@@ -87,27 +87,27 @@ _________________________________________________
 
 Required:
       --input-assembly, -i <.fasta|.fa|.fna>    Assembly file (can be gzipped)
-      --output-directory, -o <dir>    		      Common output directory containing all evaluation results
-      --threads, -t <num>             		      Number of threads
+      --output-directory, -o <dir>    		Common output directory containing all evaluation results
+      --threads, -t <num>             		Number of threads
 
 Optional evaluations (default: yes):
-      --run-busco <yes|no>        		          Run BUSCO
-      --run-craq <yes|no>         		          Run CRAQ
-      --run-inspector <yes|no>    		          Run Inspector
-      --visualization, -v <yes|no>    		      Visualize assembly errors
+      --run-busco <yes|no>        		  Run BUSCO
+      --run-craq <yes|no>         		  Run CRAQ
+      --run-inspector <yes|no>    		  Run Inspector
+      --visualization, -v <yes|no>    		  Visualize assembly errors
 
 Other optional args:
-      --busco-db, -b <str>           		        BUSCO lineage database to be used (required if --run-busco yes)
-      --reads, -r <fasq[.gz]>              	    Long reads for CRAQ/Inspector
-      --coverage <num>            		          Sequencing coverage for CRAQ
+      --busco-db, -b <str>           		  BUSCO lineage database to be used (required if --run-busco yes)
+      --reads, -r <fasq[.gz]>              	  Long reads for CRAQ/Inspector
+      --coverage <num>            		  Sequencing coverage for CRAQ
       --sequencing-platform, -p <pb|hifi|ont>	  Sequencing platform
-      --chr-name <.txt>           		          Text file of chromosome names (one per line) for visualization
-      --scale-factor <int>			                Stretch misassemblies to this length (bp) for visualization [default: 500000]
-      --mm2-params "<str>"               	      Minimap2 params for dot plot [default: "-cx asm10"]
-      --reference <fasta>                 	    Reference genome FASTA for dot plot
-      --resume                  		            Resume nohic-eval from the earliest failed/missing step
-      --help, -h                    		        Show this help
-      --version                     		        Show version
+      --chr-name <.txt>           		  Text file of chromosome names (one per line) for visualization
+      --scale-factor <int>			  Stretch misassemblies to this length (bp) for visualization [default: 500000]
+      --mm2-params "<str>"               	  Minimap2 params for dot plot [default: "-cx asm10"]
+      --reference <fasta>                 	  Reference genome FASTA for dot plot
+      --resume                  		  Resume nohic-eval from the earliest failed/missing step
+      --help, -h                    		  Show this help
+      --version                     		  Show version
 
 EOF
 }
