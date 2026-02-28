@@ -58,6 +58,12 @@ conda activate noHiC
 
 **Step 3:** Install pipeline scripts
 
+First, you need to change the scripts' permissions.
+
+```
+chmod +x ./scripts/*.sh
+```
+
 To make the pipeline scripts globally accessible within the `noHiC` environment, copy all shell scripts from the `scripts` directory into the environment’s `bin` directory.
 
 Example paths are shown below (adjust according to your conda installation):
