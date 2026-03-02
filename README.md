@@ -11,7 +11,7 @@ The most important feature of noHiC is that users can utilize publicly available
 
 ![noHiC workflow](https://github.com/andyngh/noHiC/blob/main/Fig1.png)
 <p align="center">
-  <strong>Figure 1.</strong> The computational tasks performed by the subscripts of noHiC (created by <a href="https://www.biorender.com/">Biorender</a>)
+  <strong>Figure 1.</strong> The computational tasks performed by the subscripts of noHiC (created by <a href="https://BioRender.com/gpz1mxx">Biorender</a>)
 </p>
 
 ### 1.2. Dependency Citations
