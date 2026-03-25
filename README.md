@@ -424,7 +424,7 @@ Here, `ath_chr_names.txt` contains the chromosome names (one per line) of the `C
 
 *1_Assembly_statistics*
 
-`assembly_stats.txt`: this file contains continuity metrics (N50, total scaffold/contig length, gap number...).
+`assembly_stats.txt`: this file contains contiguity metrics (N50, total scaffold/contig length, gap number...).
 
 `scaffold_lengths.txt`: this file contains the lengths of scaffolds in the input assembly.
 
@@ -496,9 +496,9 @@ Here, `chrom_lengths.csv` contains 2 columns **with** headers (`chrom` and `leng
 
 #### Evaluation Results
 
-*Continuity metrics*
+*contiguity metrics*
 
-The continuity metrics of the CAMA-C-2 assembly (after gap closing) are as follows.
+The contiguity metrics of the CAMA-C-2 assembly (after gap closing) are as follows.
 
 ```
 # scaffolds     6
@@ -535,7 +535,7 @@ Average segment length  4476156.90
 # paths 6
 ```
 
-In our [preprint](https://doi.org/10.64898/2026.03.17.712436), to highlight the benefit of the synref in preventing contig fragmentation (in comparison with an assembly guided by a conventional reference, TAIR10.1), we calculated the in-chromosome continuity metrics before gap closing as follows.
+In our [preprint](https://doi.org/10.64898/2026.03.17.712436), to highlight the benefit of the synref in preventing contig fragmentation (in comparison with an assembly guided by a conventional reference, TAIR10.1), we calculated the in-chromosome contiguity metrics before gap closing as follows.
 
 ```
 # scaffolds: 5
