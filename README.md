@@ -98,7 +98,7 @@ In the benchmarks of [our preprint](https://doi.org/10.64898/2026.03.17.712436),
 
 ```
 # 10% for final assembly evaluation
-seqkit sample -p 0.10 -j 100 -s 3108 CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz \
+seqkit sample -p 0.10 -j 25 -s 3108 CAMA-C-2-hifi_reads.ALL.trimmed.fastq.gz \
               -o CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz
 
 # 90% for synref generation, contig correction, and scaffolding
@@ -140,12 +140,14 @@ Now, we remove any contigs that are not from green plants (Viridiplantae) as wel
 
 ```
 nohic-clean.sh -i CAMA-C-2.asm.bp.p_ctg.fa -a PacBio_adapter.txt \
-               -o CAMA-C-2.asm.bp.p_ctg.cleaning -t 30 -kp CAMA-C-2 \
+               -o CAMA-C-2.asm.bp.p_ctg.cleaning -t 25 -kp CAMA-C-2 \
                -tg Viridiplantae -ioc yes -ros mt.cl.fasta \
                -m no -kdb absolute/path/to/kraken2_core_nt_db/
 ```
 
 Here, `CAMA-C-2.asm.bp.p_ctg.fa` is the input contig file. `PacBio_adapter.txt` contains adapter sequences with no headers and one sequence per line. The reference mt- and cpDNA of *A. thaliana* are provided in `mt.cl.fasta`.
+
+If your assembly project is based on ONT reads, you can check [this repo](https://github.com/Clipman-Lab/ONT_NCBI_contamination) for ONT adapter sequences.
 
 >[!NOTE]
 >If you have root privileges on your machine and many contig-level assemblies to decontaminate, we recommend executing the following commands before running `nohic-clean` with `-m yes` and **no** `-kdb`. You can read [this page](https://avilpage.com/2024/07/mastering-kraken2-performance-optimisation.html) for more information regarding this matter.
@@ -268,7 +270,7 @@ The following command is run to create a synref for CAMA-C-2
 ```
 nohic-refpick.sh -s CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
                  -g arabidopsis_pgMC.full.gbz -i arabidopsis_pgMC.full.hapl \
-                 -o CAMA-C-2 -t 100 -m 182 -p no
+                 -o CAMA-C-2 -t 25 -m 182 -p no
 ```
 
 The `arabidopsis_pgMC.full.gbz` and `arabidopsis_pgMC.full.hapl` files were generated using [Minigraph-Cactus](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). The pangenome graph includes TAIR10.1 as the reference genome and 47 additional assemblies (excluding CAMA-C-2) from [Wlodzimierz et al. (2023)](https://doi.org/10.1038/s41586-023-06062-z).
@@ -343,7 +345,7 @@ We run the following command to correct and scaffold the clean *A. thaliana* CAM
 ```
 nohic-asm.sh -c CAMA-C-2.asm.bp.p_ctg.pure.for_asm.fa -r CAMA-C-2.synref.fasta \
              -o CAMA-C-2_syn_ref_luck.asm -fq CAMA-C-2-hifi_reads.FOR_ASM.trimmed.fastq.gz \
-             -cov 63 -t 100 --run-gap-closing yes -p luck --craq-params "-t 94 -x map-hifi"  \
+             -cov 63 -t 25 --run-gap-closing yes -p luck --craq-params "-t 20 -x map-hifi"  \
              --inspector-params "--datatype hifi" --inspector-correct-params "--datatype pacbio-hifi" \
              --ragtag-correct-params "-T corr" --ragtag-scf-params "-C -r -g 2" \
              --tgsgapcloser-params "--tgstype pb"
@@ -400,7 +402,7 @@ The following command is run to evaluate the quality of the scaffolded *A. thali
 ```
 nohic-eval.sh -i CAMA-C-2.asm.bp.p_ctg.pure.for_asm.craq.inspector.corrected.scf.tgs.fa \
               -o CAMA-C-2.asm.eval \
-              -t 100 -b embryophyta_odb12 -r CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz \
+              -t 25 -b embryophyta_odb12 -r CAMA-C-2-hifi_reads.EVAL.trimmed.fastq.gz \
               --coverage 7 -p hifi --chr-name ath_chr_names.txt --scale-factor 200000 \
               --reference GCA_946406975.1_CAMA-C-2.PacbioHiFiAssembly_genomic.ed.SELECTED.fa
 ```
