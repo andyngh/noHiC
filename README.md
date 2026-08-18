@@ -128,7 +128,7 @@ Optional:
   -h, --help                                                    Display this help message
 ```
 
-Before running `nohic-clean`, we need to download the `core-nt` database for contig taxonomic classifications. 
+Before running `nohic-clean`, we need to download the `core-nt` database for contig taxonomic classifications. Taxonomic classification using `core-nt` will require more than 200GB of RAM. If you do not have sufficient computing resources, you can try smaller Kraken2 databases, such as PlusPFP-16. See [this page](https://benlangmead.github.io/aws-indexes/k2) for more information. 
 
 ```
 wget https://genome-idx.s3.amazonaws.com/kraken/k2_core_nt_20251015.tar.gz
