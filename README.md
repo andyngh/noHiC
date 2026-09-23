@@ -34,6 +34,10 @@ Please cite the following tools along with their dependencies if you use the noH
 
 [gfastats v1.3.11](https://doi.org/10.1093/bioinformatics/btac460), [bioawk v1.0](https://github.com/lh3/bioawk), [BUSCO v6.0.0](https://doi.org/10.1093/nar/gkae987), [ggplot2 v4.0.0](https://doi.org/10.1007/978-3-319-24277-4), [readr v2.1.5](https://readr.tidyverse.org/), [dplyr v1.1.4](https://dplyr.tidyverse.org/), and [paf2dotplot v1.0.1](https://github.com/moold/paf2dotplot?tab=readme-ov-file)
 
+**other tools used by noHiC-Snakemake**
+
+[Snakemake v9.25.2](https://f1000research.com/articles/10-33/v1), [HyPo v1.0.3](https://doi.org/10.1101/2019.12.19.882506), [Racon v1.5.0](https://genome.cshlp.org/content/early/2017/01/18/gr214270116), [QUAST v5.3.0](https://academic.oup.com/bioinformatics/article/29/8/1072/228832), [compleasm v0.2.9](https://academic.oup.com/bioinformatics/article/39/10/btad595/7284108).
+
 ### 1.3. noHiC Citation
 
 Please cite [our preprint](https://doi.org/10.64898/2026.03.17.712436) if you use noHiC.  
