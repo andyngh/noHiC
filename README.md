@@ -1,6 +1,9 @@
 # noHiC
 Personalized reference-guided contig scaffolding pipeline with no Hi-C data 
 
+>[!NOTE]
+>This is the old noHiC repository. Please use [noHiC-Snakemake](https://github.com/andyngh/noHiC-Snakemake).
+
 ## 1. Introduction
 
 ### 1.1. noHiC Workflow
